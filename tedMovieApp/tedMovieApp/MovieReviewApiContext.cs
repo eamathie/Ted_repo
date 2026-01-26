@@ -10,7 +10,7 @@ public class MovieReviewApiContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=Gyrierkul");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=emilisverycool");
         
     }
     
