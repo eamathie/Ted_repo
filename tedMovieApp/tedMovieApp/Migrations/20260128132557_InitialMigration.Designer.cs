@@ -12,8 +12,8 @@ using tedMovieApp;
 namespace tedMovieApp.Migrations
 {
     [DbContext(typeof(MovieReviewApiContext))]
-    [Migration("20260126141506_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260128132557_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,11 @@ namespace tedMovieApp.Migrations
 
             modelBuilder.Entity("tedMovieApp.Movie", b =>
                 {
-                    b.Property<Guid>("MovieId")
+                    b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MovieId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -51,18 +53,22 @@ namespace tedMovieApp.Migrations
 
                     b.HasKey("MovieId");
 
+                    b.HasIndex("MovieId")
+                        .IsUnique();
+
                     b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("tedMovieApp.Review", b =>
                 {
-                    b.Property<Guid>("ReviewId")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Movie")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ReviewId"));
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ReviewText")
                         .IsRequired()
@@ -75,10 +81,15 @@ namespace tedMovieApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("ReviewId");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -87,9 +98,11 @@ namespace tedMovieApp.Migrations
 
             modelBuilder.Entity("tedMovieApp.User", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,14 +110,30 @@ namespace tedMovieApp.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("tedMovieApp.Review", b =>
                 {
+                    b.HasOne("tedMovieApp.Movie", "Movie")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("tedMovieApp.User", null)
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("tedMovieApp.Movie", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("tedMovieApp.User", b =>

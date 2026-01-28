@@ -6,7 +6,6 @@ namespace tedMovieApp.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class MovieReviewController : ControllerBase
-
 {
     [HttpGet(Name = "GetAllMovieReview")]
     public async Task<ActionResult<Review>> GetAllMovieReview()
