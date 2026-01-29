@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tedMovieApp.Services;
@@ -26,41 +27,51 @@ public class MovieReviewController : ControllerBase
         _dbContext = dbContext;
     }
     
-    [HttpGet(Name = "GetAllMovieReview")]
-    public async Task<ActionResult<Review>> GetAllMovieReview()
+    [HttpGet(Name = "GetAllMovieReviews")]
+    [Authorize]
+    public async Task<ActionResult<Review>> GetAllMovieReviews()
     {
         var reviews = await _dbContext.Reviews.ToListAsync();
         return Ok(reviews);
     }
 
     [HttpPost(Name = "CreateMovieReview")]
+    [Authorize]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, string title, string reviewText, int stars)
     {
-        var movie = await _dbContext.Movies .Include(m => m.Reviews) .FirstOrDefaultAsync(m => m.MovieId == movieId);
-        //var movie = await dbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
+        var movie = await _dbContext.Movies.Include(m => m.Reviews)
+            .FirstOrDefaultAsync(m => m.MovieId == movieId);
+        
         if (movie == null)
         {
             _logger.LogError($"Movie with id {movieId} not found");
             return NotFound($"Movie with ID {movieId} was not found.");
-            /*var data = _omdbApiService.GetMovie(movieTitle);
-            movie = _jsonProcessor.ProcessMovieResponse(data);
-            dbContext.Movies.Add(movie);
-            await dbContext.SaveChangesAsync();*/
         }
 
         var review = new Review
         {
             Title = title,
-            //Movie = movie,
             ReviewText = reviewText,
             Stars = stars,
             MovieId = movie.MovieId,
             Movie = movie
         };
         
-        //movie.Reviews.Add(review);
         _dbContext.Reviews.Add(review); 
         await _dbContext.SaveChangesAsync(); 
+        return Ok(review);
+    }
+
+    [HttpDelete(Name = "DeleteMovieReview")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<Review>> DeleteMovieReview(int id)
+    {
+        var review = await _dbContext.Reviews.FirstOrDefaultAsync(r => r.ReviewId == id);
+        if (review == null)
+            return NotFound($"Review with id {id} does not exist");
+        
+        _dbContext.Reviews.Remove(review);
+        await _dbContext.SaveChangesAsync();
         return Ok(review);
     }
 }
