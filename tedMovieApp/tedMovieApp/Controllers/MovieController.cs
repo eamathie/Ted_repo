@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tedMovieApp.Services;
 
@@ -43,6 +44,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("all", Name = "GetAllMovies")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<List<Movie>>> GetAllMovies()
     {
         //var movies = dbContext.Movies.ToList();

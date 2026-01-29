@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tedMovieApp;
 using tedMovieApp.Services;
+using tedMovieApp.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultUI() 
     .AddDefaultTokenProviders();
 
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedRolesAndAdmin(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
