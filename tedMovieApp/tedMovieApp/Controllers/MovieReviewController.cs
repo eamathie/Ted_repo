@@ -27,21 +27,24 @@ public class MovieReviewController : ControllerBase
     public async Task<ActionResult<Review>> GetAllMovieReview()
     {
         await using var dbContext = new MovieReviewApiContext();
-        var reviews = dbContext.Reviews;
+        var reviews = await dbContext.Reviews.ToListAsync();
         return Ok(reviews);
     }
 
     [HttpPost(Name = "CreateMovieReview")]
-    public async Task<ActionResult<Review>> CreateMovieReview(string movieTitle, string title, string reviewText, int stars)
+    public async Task<ActionResult<Review>> CreateMovieReview(int movieId, string title, string reviewText, int stars)
     {
         await using var dbContext = new MovieReviewApiContext();
-        var movie = await dbContext.Movies.FirstOrDefaultAsync(m => m.Title == movieTitle);
+        var movie = await dbContext.Movies .Include(m => m.Reviews) .FirstOrDefaultAsync(m => m.MovieId == movieId);
+        //var movie = await dbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
         if (movie == null)
         {
-            var data = _omdbApiService.GetMovie(movieTitle);
+            _logger.LogError($"Movie with id {movieId} not found");
+            return NotFound($"Movie with ID {movieId} was not found.");
+            /*var data = _omdbApiService.GetMovie(movieTitle);
             movie = _jsonProcessor.ProcessMovieResponse(data);
             dbContext.Movies.Add(movie);
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();*/
         }
 
         var review = new Review
@@ -49,10 +52,12 @@ public class MovieReviewController : ControllerBase
             Title = title,
             //Movie = movie,
             ReviewText = reviewText,
-            Stars = stars
+            Stars = stars,
+            MovieId = movie.MovieId,
+            Movie = movie
         };
         
-        movie.Reviews.Add(review);
+        //movie.Reviews.Add(review);
         dbContext.Reviews.Add(review); 
         await dbContext.SaveChangesAsync(); 
         return Ok(review);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tedMovieApp.Services;
 
 namespace tedMovieApp.Controllers;
@@ -21,11 +22,12 @@ public class MovieController : ControllerBase
         _jsonProcessor = jsonProcessor;
     }
 
-    [HttpGet(Name = "GetMovie")]
+    [HttpGet("one", Name = "GetMovie")]
     public async Task<ActionResult<Movie>> GetMovie(string movieName)
     {
         await using var dbContext = new MovieReviewApiContext();
-        var movie = dbContext.Movies.FirstOrDefault(m => m.Title == movieName);
+        var movie = await dbContext.Movies.Include(m => m.Reviews).FirstOrDefaultAsync(m => m.Title == movieName);
+        //var movie = dbContext.Movies.FirstOrDefault(m => m.Title == movieName);
 
         if (movie == null)
         {
@@ -36,6 +38,15 @@ public class MovieController : ControllerBase
         }
         
         return Ok(movie);
+    }
+
+    [HttpGet("all", Name = "GetAllMovies")]
+    public async Task<ActionResult<List<Movie>>> GetAllMovies()
+    {
+        await using var dbContext = new MovieReviewApiContext();
+        //var movies = dbContext.Movies.ToList();
+        var movies = await dbContext.Movies.Include(m => m.Reviews) .ToListAsync();
+        return Ok(movies);
     }
     
 }

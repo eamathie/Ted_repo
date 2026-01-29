@@ -14,9 +14,7 @@ public class OmdbApiService : IOmdbApiService
     public string GetMovie(string movieTitle)
     {
         string key = "89a44e09";
-        var url = $"http://www.omdbapi.com/?apiKey={key}&t={movieTitle}";//$"http://www.omdbapi.com/?apikey={key}&s={movieTitle}";
-        //"http://www.omdbapi.com/?t=batman&plot=full"
-            //"http://www.omdbapi.com/?apikey=[yourkey]&"
+        var url = $"http://www.omdbapi.com/?apiKey={key}&t={movieTitle}";
         
         using var client = new WebClient();
         _logger.LogInformation("Calling OMDB API with url: {url}", url);
