@@ -12,30 +12,31 @@ public class MovieReviewController : ControllerBase
     private readonly ILogger<MovieReviewController> _logger;
     private readonly IOmdbApiService _omdbApiService;
     private readonly IJsonProcessor _jsonProcessor;
+    private readonly MovieReviewApiContext _dbContext;
     
     public MovieReviewController(
         ILogger<MovieReviewController> logger, 
         IOmdbApiService omdbApiService,
-        IJsonProcessor jsonProcessor)
+        IJsonProcessor jsonProcessor,
+        MovieReviewApiContext dbContext)
     {
         _logger = logger;
         _omdbApiService = omdbApiService;
         _jsonProcessor = jsonProcessor;
+        _dbContext = dbContext;
     }
     
     [HttpGet(Name = "GetAllMovieReview")]
     public async Task<ActionResult<Review>> GetAllMovieReview()
     {
-        await using var dbContext = new MovieReviewApiContext();
-        var reviews = await dbContext.Reviews.ToListAsync();
+        var reviews = await _dbContext.Reviews.ToListAsync();
         return Ok(reviews);
     }
 
     [HttpPost(Name = "CreateMovieReview")]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, string title, string reviewText, int stars)
     {
-        await using var dbContext = new MovieReviewApiContext();
-        var movie = await dbContext.Movies .Include(m => m.Reviews) .FirstOrDefaultAsync(m => m.MovieId == movieId);
+        var movie = await _dbContext.Movies .Include(m => m.Reviews) .FirstOrDefaultAsync(m => m.MovieId == movieId);
         //var movie = await dbContext.Movies.FirstOrDefaultAsync(m => m.MovieId == movieId);
         if (movie == null)
         {
@@ -58,8 +59,8 @@ public class MovieReviewController : ControllerBase
         };
         
         //movie.Reviews.Add(review);
-        dbContext.Reviews.Add(review); 
-        await dbContext.SaveChangesAsync(); 
+        _dbContext.Reviews.Add(review); 
+        await _dbContext.SaveChangesAsync(); 
         return Ok(review);
     }
 }
