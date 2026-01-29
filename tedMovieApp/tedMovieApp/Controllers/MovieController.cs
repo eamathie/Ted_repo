@@ -29,8 +29,8 @@ public class MovieController : ControllerBase
     [HttpGet("one", Name = "GetMovie")]
     public async Task<ActionResult<Movie>> GetMovie(string movieName)
     {
-        var movie = await _dbContext.Movies.Include(m => m.Reviews).FirstOrDefaultAsync(m => m.Title == movieName);
-        //var movie = dbContext.Movies.FirstOrDefault(m => m.Title == movieName);
+        var movie = await _dbContext.Movies.Include(m => m.Reviews)
+            .FirstOrDefaultAsync(m => m.Title == movieName);
 
         if (movie == null)
         {
@@ -44,10 +44,9 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("all", Name = "GetAllMovies")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public async Task<ActionResult<List<Movie>>> GetAllMovies()
     {
-        //var movies = dbContext.Movies.ToList();
         var movies = await _dbContext.Movies.Include(m => m.Reviews) .ToListAsync();
         return Ok(movies);
     }
