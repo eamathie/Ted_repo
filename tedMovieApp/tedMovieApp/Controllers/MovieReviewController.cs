@@ -25,6 +25,14 @@ public class MovieReviewController : ControllerBase
         return Ok(reviews);
     }
 
+    [HttpGet("{id:int}")]
+    [Authorize]
+    public async Task<ActionResult<Review>> GetMovieReview(int id)
+    {
+        var review = await _movieReviewService.GetMovieReview(id);
+        return Ok(review);
+    }
+
     [HttpPost(Name = "CreateMovieReview")]
     [Authorize]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, CreateReviewDto dto)
@@ -53,7 +61,7 @@ public class MovieReviewController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Review>> UpdateMovieReview(int id, UpdateReviewDto dto)
     {
@@ -73,6 +81,4 @@ public class MovieReviewController : ControllerBase
             return NotFound(e.Message);
         }
     }
-    
-    
 }

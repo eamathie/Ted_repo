@@ -19,7 +19,13 @@ public class MovieReviewService : IMovieReviewService
         var reviews = await _movieReviewRepository.GetAll();
         return reviews;
     }
-    
+
+    public async Task<Review> GetMovieReview(int id)
+    {
+        var review = await _movieReviewRepository.GetReview(id);
+        return review ??  throw new InvalidOperationException($"Review with id {id} does not exist");
+    }
+
     public async Task<Review> CreateMovieReview(int movieId, string title, string reviewText, int stars)
     {
         var review = new Review
