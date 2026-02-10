@@ -5,12 +5,10 @@ namespace tedMovieApp.Services;
 
 public class MovieReviewService : IMovieReviewService
 {
-    private readonly MovieReviewApiContext _dbContext;
     private readonly IMovieReviewRepository _movieReviewRepository;
     
-    public MovieReviewService(MovieReviewApiContext dbContext, IMovieReviewRepository movieReviewRepository)
+    public MovieReviewService(IMovieReviewRepository movieReviewRepository)
     {
-        _dbContext = dbContext;
         _movieReviewRepository = movieReviewRepository;
     }
 
