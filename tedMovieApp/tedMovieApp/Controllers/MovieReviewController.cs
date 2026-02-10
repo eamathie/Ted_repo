@@ -7,7 +7,7 @@ using tedMovieApp.Services.Interfaces;
 namespace tedMovieApp.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/reviews")]
 public class MovieReviewController : ControllerBase
 {
     private readonly IMovieReviewService _movieReviewService;
@@ -17,7 +17,7 @@ public class MovieReviewController : ControllerBase
         _movieReviewService = movieReviewService;
     }
     
-    [HttpGet(Name = "GetAllMovieReviews")]
+    [HttpGet]
     [Authorize]
     public async Task<ActionResult<Review>> GetAllMovieReviews()
     {
@@ -33,7 +33,7 @@ public class MovieReviewController : ControllerBase
         return Ok(review);
     }
 
-    [HttpPost(Name = "CreateMovieReview")]
+    [HttpPost]
     [Authorize]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
@@ -46,7 +46,7 @@ public class MovieReviewController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete(Name = "DeleteMovieReview")]
+    [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Review>> DeleteMovieReview(int id)
     {
