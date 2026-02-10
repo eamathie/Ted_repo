@@ -49,7 +49,7 @@ public class MovieReviewService : IMovieReviewService
         return review;
     }
 
-    public async Task<Review> UpdateMovieReview(int id, string title, string reviewText, int stars)
+    public async Task<Review> UpdateMovieReview(int id, int movieId, string title, string reviewText, int stars)
     {
         var review = await _movieReviewRepository.GetReview(id);
         if (review == null)
@@ -58,6 +58,7 @@ public class MovieReviewService : IMovieReviewService
         review.Title = title;
         review.ReviewText = reviewText;
         review.Stars = stars;
+        review.MovieId = movieId;
         
         await _movieReviewRepository.Update(review);
         return review;

@@ -69,6 +69,7 @@ public class MovieReviewController : ControllerBase
         {
             var updatedReview = await _movieReviewService.UpdateMovieReview(
                 id,
+                dto.MovieId,
                 dto.Title,
                 dto.ReviewText,
                 dto.Stars
