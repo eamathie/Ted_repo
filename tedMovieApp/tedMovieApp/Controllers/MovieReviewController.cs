@@ -35,7 +35,7 @@ public class MovieReviewController : ControllerBase
 
     [HttpPost(Name = "CreateMovieReview")]
     [Authorize]
-    public async Task<ActionResult<Review>> CreateMovieReview(int movieId, CreateReviewDto dto)
+    public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
         var result = await _movieReviewService.CreateMovieReview(
             dto.MovieId,
@@ -63,7 +63,7 @@ public class MovieReviewController : ControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<Review>> UpdateMovieReview(int id, UpdateReviewDto dto)
+    public async Task<ActionResult<Review>> UpdateMovieReview(int id, ReviewDto dto)
     {
         try
         {
