@@ -17,10 +17,9 @@ public class MovieReviewController : ControllerBase
         _movieReviewService = movieReviewService;
     }
     
+    [Authorize]
     [HttpGet]
-    //[Authorize]
-    
-    public async Task<ActionResult<IEnumerable<Review>>> GetAllMovieReviews()
+    public async Task<ActionResult<Review>> GetAllMovieReviews()
     {
         var reviews = await _movieReviewService.GetAllMovieReviews();
         return Ok(reviews);
@@ -35,12 +34,12 @@ public class MovieReviewController : ControllerBase
         return Ok(review);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
         var result = await _movieReviewService.CreateMovieReview(
-            dto.MovieId,
+            movieId,
             dto.Title,
             dto.ReviewText,
             dto.Stars
@@ -65,13 +64,13 @@ public class MovieReviewController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<Review>> UpdateMovieReview(int id, ReviewDto dto)
+    public async Task<ActionResult<Review>> UpdateMovieReview(int id, int movieId, ReviewDto dto)
     {
         try
         {
             var updatedReview = await _movieReviewService.UpdateMovieReview(
                 id,
-                dto.MovieId,
+                movieId,
                 dto.Title,
                 dto.ReviewText,
                 dto.Stars
