@@ -13,7 +13,4 @@ public class Review
     public string ReviewText { get; set; }
     [Range(1, 5)] public int Stars { get; set; }
     public int MovieId { get; set; } // Foreign key
-    
-    [JsonIgnore]
-    public Movie Movie { get; set; } // Navigation property (optional but useful)
 }
