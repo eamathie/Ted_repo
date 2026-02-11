@@ -1,0 +1,23 @@
+/* Header.css */
+
+.form-header {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #4a90e2, #357ab7);
+  color: #ffffff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.form-subtitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  opacity: 0.9;
+}
