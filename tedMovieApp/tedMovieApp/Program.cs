@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tedMovieApp;
+using tedMovieApp.Repositories;
+using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;
+using tedMovieApp.Services.Interfaces;
 using tedMovieApp.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 builder.Services.AddSingleton<IJsonProcessor, JsonProcessor>();
+builder.Services.AddScoped<IMovieReviewService, MovieReviewService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
+
 
 builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=emilisverycool")); 
 

@@ -25,16 +25,16 @@ public class MovieReviewController : ControllerBase
         return Ok(reviews);
     }
 
-    [HttpGet("{id:int}")]
     [Authorize]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Review>> GetMovieReview(int id)
     {
         var review = await _movieReviewService.GetMovieReview(id);
         return Ok(review);
     }
 
-    [HttpPost]
     [Authorize]
+    [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
         var result = await _movieReviewService.CreateMovieReview(
@@ -46,8 +46,8 @@ public class MovieReviewController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult<Review>> DeleteMovieReview(int id)
     {
         try
@@ -61,8 +61,8 @@ public class MovieReviewController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
+    [HttpPut("{id:int}")]
     public async Task<ActionResult<Review>> UpdateMovieReview(int id, ReviewDto dto)
     {
         try
