@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import InputField from "./InputField";
+import { useAuth } from "../auth/AuthContext";
 
 /**
  * LoginForm
- * - Props (all optional):
- *    onSubmit: (formData) => void
- *    initialValues: { username?: string, password?: string }
- *
- * Behavior:
- *  - No thank-you screen
- *  - On submit, navigates to Home ('/')
+ * - On submit: sets auth, then navigates to Home ('/') or the originally requested page.
  */
-function LoginForm({
-  onSubmit,
-  initialValues = { username: "", password: "" },
-}) {
+function LoginForm({ initialValues = { username: "", password: "" }, onSubmit }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
     username: initialValues.username ?? "",
     password: initialValues.password ?? "",
@@ -27,19 +22,21 @@ function LoginForm({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-    // In real apps: validate, call API, show errors, etc.
-    console.log("Login submitted (username only):", formData.username);
+  if (typeof onSubmit === "function") {
+    onSubmit(formData);
+  }
 
-    if (typeof onSubmit === "function") {
-      onSubmit(formData);
-    }
+  // Save the username in auth context (frontend-only)
+  login({ username: formData.username });
 
-    // Navigate to home page after "successful" login
-    navigate("/");
-  };
+  const dest = location.state?.from?.pathname || "/";
+  navigate(dest, { replace: true });
+};
+
 
   const isDisabled = !formData.username || !formData.password;
 
