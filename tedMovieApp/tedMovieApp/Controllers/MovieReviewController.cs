@@ -25,6 +25,7 @@ public class MovieReviewController : ControllerBase
         return Ok(reviews);
     }
 
+
     [Authorize]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Review>> GetMovieReview(int id)

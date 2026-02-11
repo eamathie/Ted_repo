@@ -15,7 +15,31 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
+
+// Controllers + camelCase JSON so React sees reviewId/title/reviewText/etc.
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+});
+
+// CORS for your React dev origin
+var allowFrontend = "AllowFrontend";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowFrontend, policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:5173", // Vite
+            "http://localhost:3000"  // CRA if you ever use it
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+        // Do NOT add .AllowCredentials() here if you’re not sending cookies
+    });
+});
+
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -30,7 +54,7 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 
-builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=emilisverycool")); 
+builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=Gyrierkul")); 
 
 
 var jwtSection = builder.Configuration.GetSection("Jwt"); 
@@ -76,6 +100,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(allowFrontend);
 
 app.UseAuthentication();
 app.UseAuthorization();
