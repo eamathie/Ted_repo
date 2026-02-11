@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
+import RegistrationForm from "./components/RegistrationForm";
+import LoginForm from "./components/LoginForm";
+import HomePage from "./pages/HomePage";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const handleRegistration = (data) => {
+    console.log("Registration (App received):", { username: data.username });
+  };
+
+  const handleLogin = (data) => {
+    //in real app when connected to backend, authenticate via backend and handle tokens 
+    console.log("Login (App received):", { username: data.username });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      {/* Simple nav for testing (optional) */}
+      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+        <Link to="/">Home</Link>
+      </nav>
+
+      <Routes>
+        {/* Default route → /login */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/login" element={<LoginForm onSubmit={handleLogin} />} />
+
+        <Route
+          path="/register"
+          element={<RegistrationForm onSubmit={handleRegistration} showThankYou={true} />}
+        />
+
+        {/* If someone hits an unknown path, redirect to /login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
