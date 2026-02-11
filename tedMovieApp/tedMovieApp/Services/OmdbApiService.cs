@@ -5,19 +5,28 @@ namespace tedMovieApp.Services;
 public class OmdbApiService : IOmdbApiService
 {
     private readonly ILogger<OmdbApiService> _logger;
+    private const string _key = "89a44e09";
 
     public OmdbApiService(ILogger<OmdbApiService> logger)
     {
         _logger = logger;
     }
     
-    public string GetMovie(string movieTitle)
+    public async Task<string> GetMoviesByQuery(string query)
     {
-        string key = "89a44e09";
-        var url = $"http://www.omdbapi.com/?apiKey={key}&t={movieTitle}";
+        var url = $"http://www.omdbapi.com/?apiKey={_key}&s={query}"; 
+        using var client = new HttpClient(); 
+        _logger.LogInformation("Calling OMDB API with url: {url}", url); 
         
-        using var client = new WebClient();
+        return await client.GetStringAsync(url);
+    }
+
+    public async Task<string> GetMovieById(string id)
+    {
+        var url = $"http://www.omdbapi.com/?apiKey={_key}&i={id}";
+        using var client = new HttpClient();
         _logger.LogInformation("Calling OMDB API with url: {url}", url);
-        return client.DownloadString(url);
+        
+        return  await client.GetStringAsync(url);
     }
 }

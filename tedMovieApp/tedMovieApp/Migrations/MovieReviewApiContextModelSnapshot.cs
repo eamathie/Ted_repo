@@ -234,7 +234,15 @@ namespace tedMovieApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ImdbId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Length")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PosterUrl")
                         .IsRequired()
                         .HasColumnType("text");
 

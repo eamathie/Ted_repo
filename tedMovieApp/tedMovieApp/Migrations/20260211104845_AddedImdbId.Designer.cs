@@ -12,8 +12,8 @@ using tedMovieApp;
 namespace tedMovieApp.Migrations
 {
     [DbContext(typeof(MovieReviewApiContext))]
-    [Migration("20260129102311_InitialIdentity")]
-    partial class InitialIdentity
+    [Migration("20260211104845_AddedImdbId")]
+    partial class AddedImdbId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -237,7 +237,15 @@ namespace tedMovieApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ImdbId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Length")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PosterUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -341,13 +349,11 @@ namespace tedMovieApp.Migrations
 
             modelBuilder.Entity("tedMovieApp.Review", b =>
                 {
-                    b.HasOne("tedMovieApp.Movie", "Movie")
+                    b.HasOne("tedMovieApp.Movie", null)
                         .WithMany("Reviews")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("tedMovieApp.Movie", b =>
