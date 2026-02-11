@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import InputField from "./InputField";
 
 /**
@@ -8,7 +9,6 @@ import InputField from "./InputField";
  *    initialValues: { username?: string, password?: string }
  *    showThankYou: boolean          // if true, shows a thank-you screen after submit
  */
-
 function RegistrationForm({
   onSubmit,
   initialValues = { username: "", password: "" },
@@ -50,12 +50,17 @@ function RegistrationForm({
     return (
       <div className="registration-form">
         <h2>Thank you for registering on our page {formData.username}.</h2>
+        <p>You can now proceed to login.</p>
+        <Link to="/login">
+          <button type="button">Go to Login</button>
+        </Link>
       </div>
     );
   }
 
   return (
     <form className="registration-form" onSubmit={handleSubmit}>
+      <h2>Register</h2>
       {inputFields.map((inputField) => (
         <InputField
           key={inputField.name}

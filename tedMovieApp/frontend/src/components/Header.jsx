@@ -1,11 +1,11 @@
-import "./Header.css";
+
+import { Routes, Route, Link } from "react-router-dom";
 
 export default function Header() {
-  return (
-    <header className="form-header">
-      <h1 className="form-title">tedMovieApp</h1>
-      <p className="form-subtitle">IMDb for friends!</p>
-    </header>
-  );
+  <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+        <Link to="/">Home</Link>
+        <Link to="/register">Register</Link>
+        <Link to="/login">Login</Link>
+      </nav>
 }
 
