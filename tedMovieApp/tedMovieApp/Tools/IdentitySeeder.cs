@@ -6,7 +6,8 @@ public class IdentitySeeder
 {
     public static async Task SeedRolesAndAdmin(IServiceProvider services)
     {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        using var  scope = services.CreateScope();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
         // Ensure roles exist
