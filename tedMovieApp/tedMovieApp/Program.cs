@@ -1,5 +1,8 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using tedMovieApp;
 using tedMovieApp.Repositories;
 using tedMovieApp.Repositories.Interfaces;
@@ -29,8 +32,30 @@ builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=emilisverycool")); 
 
+
+var jwtSection = builder.Configuration.GetSection("Jwt"); 
+var key = Encoding.UTF8.GetBytes(jwtSection["Key"]);
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSection["ValidIssuer"],
+            ValidAudience = jwtSection["ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>() 
     .AddEntityFrameworkStores<MovieReviewApiContext>() 
+    .AddDefaultTokenProviders()
     .AddDefaultUI() 
     .AddDefaultTokenProviders();
 
