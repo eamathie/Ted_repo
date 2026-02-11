@@ -18,12 +18,14 @@ public class MovieReviewController : ControllerBase
     }
     
     [HttpGet]
-    [Authorize]
-    public async Task<ActionResult<Review>> GetAllMovieReviews()
+    //[Authorize]
+    
+    public async Task<ActionResult<IEnumerable<Review>>> GetAllMovieReviews()
     {
         var reviews = await _movieReviewService.GetAllMovieReviews();
         return Ok(reviews);
     }
+
 
     [Authorize]
     [HttpGet("{id:int}")]
@@ -33,7 +35,7 @@ public class MovieReviewController : ControllerBase
         return Ok(review);
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
