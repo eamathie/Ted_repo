@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tedMovieApp.Dtos; 
@@ -38,8 +39,11 @@ public class MovieReviewController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
         var result = await _movieReviewService.CreateMovieReview(
             movieId,
+            userId,
             dto.Title,
             dto.ReviewText,
             dto.Stars
