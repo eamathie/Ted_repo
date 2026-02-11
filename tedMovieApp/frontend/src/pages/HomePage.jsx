@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import ReviewList from "../components/ReviewList";
 import ReviewDetailModal from "../components/ReviewDetailModal";
-import { getReviews, seedDemoReviews } from "../services/reviewStorage";
+import { fetchAllReviews } from "../services/reviewsApi";
 
 function HomePage() {
   const { user, logout } = useAuth();
@@ -10,25 +10,32 @@ function HomePage() {
 
   const [reviews, setReviews] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [status, setStatus] = useState("idle"); // 'idle' | 'loading' | 'success' | 'error'
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!username) {
-      console.warn("HomePage: username is missing; are you logged in?");
-      return;
-    }
+    if (!username) return;
 
-    // 1) Try to load reviews
-    const existing = getReviews(username);
-    console.log("HomePage: existing reviews", existing);
+    let cancelled = false;
+    (async () => {
+      setStatus("loading");
+      setError("");
+      try {
+        const data = await fetchAllReviews();
+        if (!cancelled) {
+          setReviews(Array.isArray(data) ? data : []);
+          setStatus("success");
+        }
+      } catch (e) {
+        console.error(e);
+        if (!cancelled) {
+          setError(e.message || "Failed to load reviews");
+          setStatus("error");
+        }
+      }
+    })();
 
-    // 2) If none exist, seed demo data
-    if (!existing || existing.length === 0) {
-      const seeded = seedDemoReviews(username);
-      console.log("HomePage: seeded reviews", seeded);
-      setReviews(seeded);
-    } else {
-      setReviews(existing);
-    }
+    return () => { cancelled = true; };
   }, [username]);
 
   return (
@@ -43,7 +50,12 @@ function HomePage() {
         </div>
       </header>
 
-      <ReviewList reviews={reviews} onSelect={setSelected} />
+      {status === "loading" && <p>Loading reviews…</p>}
+      {status === "error" && <div style={{ color: "crimson" }}>{error}</div>}
+      {status === "success" && (
+        <ReviewList reviews={reviews} onSelect={setSelected} />
+      )}
+
       <ReviewDetailModal review={selected} onClose={() => setSelected(null)} />
     </div>
   );

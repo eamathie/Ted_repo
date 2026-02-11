@@ -1,10 +1,10 @@
-const STORAGE_KEY = "reviews_by_user";
+/*const STORAGE_KEY = "reviews_by_user";
 
 /**
  * JS shape mirrors your C# fields (camelCase in JS):
  * { reviewId: number, title: string, reviewText: string, stars: 1|2|3|4|5, movieId: number }
  */
-
+/*
 function getStore() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -29,7 +29,7 @@ export function setReviews(username, reviews) {
 }
 
 /** Optional: seed demo reviews if user has none (handy for UI testing) */
-export function seedDemoReviews(username) {
+/*export function seedDemoReviews(username) {
   const existing = getReviews(username);
   if (existing.length) return existing;
 
@@ -54,4 +54,4 @@ export function seedDemoReviews(username) {
 
   setReviews(username, demo);
   return demo;
-}
+}*/
