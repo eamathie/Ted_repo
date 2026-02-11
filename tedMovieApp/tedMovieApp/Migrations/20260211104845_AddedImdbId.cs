@@ -5,7 +5,7 @@
 namespace tedMovieApp.Migrations
 {
     /// <inheritdoc />
-    public partial class SwappedMovieWithMovieId : Migration
+    public partial class AddedImdbId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

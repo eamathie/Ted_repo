@@ -12,5 +12,5 @@ public class Review
     //public Movie Movie { get; set; }
     public string ReviewText { get; set; }
     [Range(1, 5)] public int Stars { get; set; }
-    public int MovieId { get; set; } // Foreign key
+    public int MovieId { get; set; }
 }

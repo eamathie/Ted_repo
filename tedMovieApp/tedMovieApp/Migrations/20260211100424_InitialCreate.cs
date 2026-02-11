@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace tedMovieApp.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentity : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,11 +57,13 @@ namespace tedMovieApp.Migrations
                 {
                     MovieId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ImdbId = table.Column<string>(type: "text", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Genre = table.Column<string>(type: "text", nullable: false),
                     Length = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    ReleaseDate = table.Column<DateOnly>(type: "date", nullable: false)
+                    ReleaseDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    PosterUrl = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -2,5 +2,9 @@
 
 public interface IOmdbApiService
 {
-    string GetMovie(string movieTitle);
+    Task<string> GetMoviesByQuery(string query);
+    Task<string> GetMovieById(string id);
+
+
+
 }
