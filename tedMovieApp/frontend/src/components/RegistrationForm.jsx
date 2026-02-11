@@ -8,6 +8,7 @@ import InputField from "./InputField";
  *    initialValues: { username?: string, password?: string }
  *    showThankYou: boolean          // if true, shows a thank-you screen after submit
  */
+
 function RegistrationForm({
   onSubmit,
   initialValues = { username: "", password: "" },

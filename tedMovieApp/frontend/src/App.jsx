@@ -12,9 +12,7 @@ function App() {
   return (
     <div className="App">
       <RegistrationForm
-        onSubmit={handleRegistration}
-        initialValues={{ username: "", password: "" }}
-        showThankYou={true}
+        //onSubmit={handleRegistration}
       />
     </div>
   );
