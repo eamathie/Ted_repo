@@ -69,34 +69,19 @@ public class MovieController : ControllerBase
         return Ok(combined); 
     }
     
-    /*
+    
     [HttpGet($"{{id}}")]
     public async Task<ActionResult<Movie>> GetMovie(string id)
     {
-        var movie = await _dbContext.Movies.Include(m => m.Reviews)
-            .FirstOrDefaultAsync(m => m.Title == movieName);
-
-        if (movie == null)
+        try
         {
-            var data = _omdbApiService.GetMovie(movieName);
-            movie = _jsonProcessor.ProcessMovieResponse(data);
-            _dbContext.Movies.Add(movie);
-            await _dbContext.SaveChangesAsync();
+            var movie = await _dbContext.Movies.Include(m => m.Reviews)
+                .FirstOrDefaultAsync(m => m.ImdbId == id);
+            return Ok(movie);
         }
-
-        return Ok(movie);
-        
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
-    
-    */
-
-    //[Authorize]
-    [HttpGet("{query}")]
-    public async Task<ActionResult<List<Movie>>> GetMovies(string query)
-    {
-        //throw  new NotImplementedException();
-        var movies = await _dbContext.Movies.Include(m => m.Reviews) .ToListAsync();
-        return Ok(movies);
-    }
-    
 }
