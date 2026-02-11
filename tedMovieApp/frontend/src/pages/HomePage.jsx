@@ -2,26 +2,30 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import ReviewList from "../components/ReviewList";
 import ReviewDetailModal from "../components/ReviewDetailModal";
-import { fetchAllReviews } from "../services/reviewsApi";
+import { fetchAllReviews } from "../services/api/reviewsApi";
 
 function HomePage() {
   const { user, logout } = useAuth();
-  const username = user?.username;
+
+  // Common claim names:
+  // user?.email (JwtRegisteredClaimNames.Email)
+  // user?.unique_name or user?.name (ClaimTypes.Name)
+  // user?.sub (JwtRegisteredClaimNames.Sub)
+  const displayName = user?.email || user?.unique_name || user?.name || "user";
 
   const [reviews, setReviews] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [status, setStatus] = useState("idle"); // 'idle' | 'loading' | 'success' | 'error'
+  const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!username) return;
-
     let cancelled = false;
+
     (async () => {
       setStatus("loading");
       setError("");
       try {
-        const data = await fetchAllReviews();
+        const data = await fetchAllReviews(); // token auto-attached by httpClient
         if (!cancelled) {
           setReviews(Array.isArray(data) ? data : []);
           setStatus("success");
@@ -36,7 +40,7 @@ function HomePage() {
     })();
 
     return () => { cancelled = true; };
-  }, [username]);
+  }, []); // no need to depend on username/claims
 
   return (
     <div className="home">
@@ -44,7 +48,7 @@ function HomePage() {
         <h1>My Reviews</h1>
         <div className="home-actions">
           <span className="username">
-            Logged in as <strong>{username}</strong>
+            Logged in as <strong>{displayName}</strong>
           </span>
           <button onClick={logout}>Log out</button>
         </div>
