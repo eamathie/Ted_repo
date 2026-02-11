@@ -17,7 +17,7 @@ public class MovieController : ControllerBase
         _movieService = movieService;
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet("search")] 
     public async Task<ActionResult<IEnumerable<Movie>>> SearchMovies(string title) 
     { 
