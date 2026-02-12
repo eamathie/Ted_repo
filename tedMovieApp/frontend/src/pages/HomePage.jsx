@@ -17,7 +17,6 @@ export default function HomePage() {
     <div className="home">
       <h1>My Reviews</h1>
       <header className="home-header">
-        
         <div className="user-info">
           Logged in as <strong>{displayName}</strong>
           <button onClick={logout}>Log out</button>
@@ -28,6 +27,7 @@ export default function HomePage() {
         isAuthenticated={isAuthenticated}
         onCreate={create}
       />
+      <br />
 
       <ReviewsListSection
         reviews={reviews}

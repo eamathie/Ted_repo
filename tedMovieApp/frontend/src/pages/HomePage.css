@@ -11,25 +11,26 @@
 } */
 
 .user-info {
-  display: grid;
-  gap: 12px;
+    display: grid;
+    gap: 12px;
 }
 
 .home {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 16px;
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
 }
 
 .home-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .home-actions .username {
-  margin-right: 12px;
-  color: #444;
+    margin-right: 12px;
+    color: #444;
 }

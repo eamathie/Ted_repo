@@ -57,6 +57,7 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
         <label>
           Search movie:
           <input
+             className="singleLineInput"
             type="text"
             placeholder="Type at least 2 letters..."
             value={query}
@@ -114,17 +115,17 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, maxWidth: 420 }}>
         <label>
           Title
-          <input placeholder="Enter review title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input className="singleLineInput" placeholder="Enter review title" value={title} onChange={(e) => setTitle(e.target.value)} required />
         </label>
 
         <label>
           Review text
-          <textarea placeholder="Enter review text" rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} required />
+          <textarea className="textAreaInput" placeholder="Enter review text" rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} required />
         </label>
 
         <label>
           Stars (1–5)
-          <input type="number" min="1" max="5" value={stars} onChange={(e) => setStars(e.target.value)} required />
+          <input className="starInput" type="number" min="1" max="5" value={stars} onChange={(e) => setStars(e.target.value)} required />
         </label>
 
         <button type="submit" disabled={busy || !movieId || isNaN(Number(movieId))}>

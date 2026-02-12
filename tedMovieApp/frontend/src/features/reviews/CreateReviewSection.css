@@ -1,34 +1,84 @@
 .create-review-section {
-  border: 1px solid #ccc;
-  padding: 16px;
-  border-radius: 8px;
-  display: grid;
-  gap: 12px;
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 25px;
+    border-color: #ffffff;
+    display: grid;
+    gap: 12px;
+    justify-content: center;
+    box-shadow: 5px 20px 50px rgb(41, 41, 41);
+
 }
+
 .movie-search {
-  display: grid;
-  gap: 8px;
+    display: grid;
+    gap: 8px;
 }
 
 .search-error {
-  color: crimson;
+    color: crimson;
 }
 
 .movie-search-results {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fff;
-  max-height: 240px;
-  overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    max-height: 240px;
+    overflow-y: auto;
 }
 
 .search-result-item {
-  width: 100%;
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  display: grid;
-  gap: 8px;
-  align-items: center;
+    width: 100%;
+    height: fit-content;
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    gap: 8px;
+    color: black;
+    /* align-items: center; */
 }
 
+.singleLineInput {
+    max-width: 80%;
+    width: 300px;
+    height: 20px;
+    background: #eeeded;
+    justify-content: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: black;
+}
+
+.starInput {
+    width: 50px;
+    height: 20px;
+    background: #eeeded;
+    justify-content: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: black;
+}
+
+.textAreaInput {
+    max-width: 80%;
+    width: 300px;
+    height: 100px;
+    background: #eeeded;
+    justify-content: center;
+    display: flex;
+    margin: 20px auto;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: black;
+}
