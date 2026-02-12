@@ -54,11 +54,15 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 
-builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=Gyrierkul")); 
+builder.Services.AddDbContext<MovieReviewApiContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 
+builder.Services.Configure<OmdbSettings>( builder.Configuration.GetSection("Omdb"));
+builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 
-var jwtSection = builder.Configuration.GetSection("Jwt"); 
+var jwtSection = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSection["Key"]);
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,11 +81,16 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>() 
-    .AddEntityFrameworkStores<MovieReviewApiContext>() 
-    .AddDefaultTokenProviders()
-    .AddDefaultUI() 
+
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<MovieReviewApiContext>()
     .AddDefaultTokenProviders();
+
+
 
 
 var app = builder.Build();
