@@ -5,7 +5,9 @@ import LoginForm from "./components/LoginForm";
 import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Navbar from "./components/Navbar"
+import Header from "./components/Header";
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   const handleRegistration = (data) => {
@@ -19,26 +21,31 @@ function App() {
 
   return (
     <div className="App">
-
+      <Header />
       <Navbar />
-      <Routes>
-        {/* Default route → /login */}
-        <Route path="/" element={
-          <ProtectedRoute>
-            <HomePage />
-          </ProtectedRoute>
-        } />
 
-        <Route path="/login" element={<LoginForm onSubmit={handleLogin} />} />
+      <main>
+        <Routes>
+          {/* Default route → /login */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          } />
 
-        <Route
-          path="/register"
-          element={<RegistrationForm onSubmit={handleRegistration} showThankYou={true} />}
-        />
+          <Route path="/login" element={<LoginForm onSubmit={handleLogin} />} />
 
-        {/* If someone hits an unknown path, redirect to /login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          <Route
+            path="/register"
+            element={<RegistrationForm onSubmit={handleRegistration} showThankYou={true} />}
+          />
+
+          {/* If someone hits an unknown path, redirect to /login */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </main>
+
+      <Footer />
 
     </div>
   );
