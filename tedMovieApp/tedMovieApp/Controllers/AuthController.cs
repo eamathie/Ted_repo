@@ -12,8 +12,7 @@ public class AuthController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IConfiguration _config;
 
-    public AuthController(UserManager<IdentityUser> userManager, /*SignInManager<IdentityUser> signInManager,*/
-        IConfiguration config)
+    public AuthController(UserManager<IdentityUser> userManager, IConfiguration config)
     {
         _userManager = userManager; 
         _config = config;
