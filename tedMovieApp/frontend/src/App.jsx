@@ -4,6 +4,7 @@ import RegistrationForm from "./components/RegistrationForm";
 import LoginForm from "./components/LoginForm";
 import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import Navbar from "./components/Navbar"
 import "./App.css";
 
 function App() {
@@ -18,13 +19,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* Simple nav for testing (optional) */}
-      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/">Home</Link>
-      </nav>
 
+      <Navbar />
       <Routes>
         {/* Default route → /login */}
         <Route path="/" element={
@@ -43,6 +39,7 @@ function App() {
         {/* If someone hits an unknown path, redirect to /login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+
     </div>
   );
 }

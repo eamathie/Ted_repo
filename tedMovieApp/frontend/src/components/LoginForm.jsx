@@ -41,6 +41,7 @@ const handleSubmit = (e) => {
   const isDisabled = !formData.username || !formData.password;
 
   return (
+    <div className="main">
     <form className="login-form" onSubmit={handleSubmit}>
       <h2>Login</h2>
 
@@ -66,6 +67,7 @@ const handleSubmit = (e) => {
         <Link to="/register">Register</Link>
       </div>
     </form>
+    </div>
   );
 }
 
