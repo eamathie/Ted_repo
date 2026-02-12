@@ -73,7 +73,7 @@ public class MovieReviewController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<ActionResult<Review>> UpdateMovieReview(int id, int movieId, ReviewDto dto)
     {
