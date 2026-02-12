@@ -38,21 +38,29 @@ public class MovieReviewService : IMovieReviewService
         await _movieReviewRepository.Add(review);
         return review;
     }
-    public async Task<Review> DeleteMovieReview(int id)
+    public async Task<Review> DeleteMovieReview(int id, string userId, bool isAdmin)
     {
         var review = await _movieReviewRepository.GetReview(id);
         if (review == null)
             throw new InvalidOperationException($"Review with id {id} does not exist");
         
+        // authorization check
+        if (review.UserId != userId && !isAdmin)
+            throw new UnauthorizedAccessException("You are not allowed to delete this review");
+        
         await _movieReviewRepository.Delete(review);
         return review;
     }
 
-    public async Task<Review> UpdateMovieReview(int id, int movieId, string title, string reviewText, int stars)
+    public async Task<Review> UpdateMovieReview(int id, string userId, bool isAdmin, int movieId, string title, string reviewText, int stars)
     {
         var review = await _movieReviewRepository.GetReview(id);
         if (review == null)
             throw new InvalidOperationException($"Review with id {id} does not exist");
+        
+        // authorization check
+        if (review.UserId != userId && !isAdmin)
+            throw new UnauthorizedAccessException("You are not allowed to update this review");
         
         review.Title = title;
         review.ReviewText = reviewText;

@@ -51,14 +51,21 @@ public class MovieReviewController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<Review>> DeleteMovieReview(int id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
-            await _movieReviewService.DeleteMovieReview(id);
+            await _movieReviewService.DeleteMovieReview(id, userId, isAdmin);
             return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
         }
         catch (KeyNotFoundException e)
         {
@@ -70,10 +77,15 @@ public class MovieReviewController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<ActionResult<Review>> UpdateMovieReview(int id, int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
             var updatedReview = await _movieReviewService.UpdateMovieReview(
                 id,
+                userId,
+                isAdmin,
                 movieId,
                 dto.Title,
                 dto.ReviewText,

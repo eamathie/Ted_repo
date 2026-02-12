@@ -22,6 +22,9 @@ public class MovieReviewApiContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Review>()
             .HasIndex(r => r.ReviewId)
             .IsUnique();
+
+        modelBuilder.Entity<Review>().HasOne(r => r.User)
+            .WithMany(); // or .WithMany(u => u.Reviews) if you add a collection .HasForeignKey(r => r.UserId) .OnDelete(DeleteBehavior.Cascade);
     }
     
 }
