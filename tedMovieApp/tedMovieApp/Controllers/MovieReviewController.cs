@@ -9,20 +9,13 @@ namespace tedMovieApp.Controllers;
 
 [ApiController]
 [Route("api/reviews")]
-public class MovieReviewController : ControllerBase
+public class MovieReviewController(IMovieReviewService movieReviewService) : ControllerBase
 {
-    private readonly IMovieReviewService _movieReviewService;
-    
-    public MovieReviewController(IMovieReviewService movieReviewService)
-    {
-        _movieReviewService = movieReviewService;
-    }
-    
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<Review>> GetAllMovieReviews()
     {
-        var reviews = await _movieReviewService.GetAllMovieReviews();
+        var reviews = await movieReviewService.GetAllMovieReviews();
         return Ok(reviews);
     }
 
@@ -31,7 +24,7 @@ public class MovieReviewController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Review>> GetMovieReview(int id)
     {
-        var review = await _movieReviewService.GetMovieReview(id);
+        var review = await movieReviewService.GetMovieReview(id);
         return Ok(review);
     }
 
@@ -41,7 +34,7 @@ public class MovieReviewController : ControllerBase
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         
-        var result = await _movieReviewService.CreateMovieReview(
+        var result = await movieReviewService.CreateMovieReview(
             movieId,
             userId,
             dto.Title,
@@ -60,7 +53,7 @@ public class MovieReviewController : ControllerBase
         
         try
         {
-            await _movieReviewService.DeleteMovieReview(id, userId, isAdmin);
+            await movieReviewService.DeleteMovieReview(id, userId, isAdmin);
             return NoContent();
         }
         catch (UnauthorizedAccessException)
@@ -82,7 +75,7 @@ public class MovieReviewController : ControllerBase
         
         try
         {
-            var updatedReview = await _movieReviewService.UpdateMovieReview(
+            var updatedReview = await movieReviewService.UpdateMovieReview(
                 id,
                 userId,
                 isAdmin,

@@ -54,8 +54,11 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 
-builder.Services.AddDbContext<MovieReviewApiContext>(options => options.UseNpgsql("Host=localhost;Port=5432;Database=tedmovieapp;User Id=postgres;Password=emilisverycool")); 
+builder.Services.AddDbContext<MovieReviewApiContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 
+builder.Services.Configure<OmdbSettings>( builder.Configuration.GetSection("Omdb"));
+builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSection["Key"]);
