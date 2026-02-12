@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import "./LoginForm.css";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -23,7 +24,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 8, maxWidth: 320 }}>
+    <form onSubmit={onSubmit} className="form">
       <h2>Log in</h2>
       <input
         type="email"
@@ -40,9 +41,9 @@ export default function LoginForm() {
         placeholder="Password"
       />
       <button type="submit">Log in</button>
-      {error && <div style={{ color: "crimson" }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
 
-      <div style={{ marginTop: 12 }}>
+      <div className="register-link">
         <span>Don’t have an account? </span>
         <Link to="/register">Register</Link>
       </div>
