@@ -1,23 +1,24 @@
 ﻿using System.Net;
+using Microsoft.Extensions.Options;
+using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Tools;
 
 namespace tedMovieApp.Services;
 
-public class OmdbApiService : IOmdbApiService
+public class OmdbApiService(IOptions<OmdbSettings> settings) : IOmdbApiService
 {
-    private readonly ILogger<OmdbApiService> _logger;
+    private readonly OmdbSettings _settings = settings.Value; 
+    private readonly HttpClient _httpClient = new();
 
-    public OmdbApiService(ILogger<OmdbApiService> logger)
+    public async Task<string> GetMoviesByQuery(string query)
     {
-        _logger = logger;
+        var url = $"{_settings.BaseUrl}?apiKey={_settings.ApiKey}&s={query}"; 
+        return await _httpClient.GetStringAsync(url);
     }
-    
-    public string GetMovie(string movieTitle)
+
+    public async Task<string> GetMovieById(string id)
     {
-        string key = "89a44e09";
-        var url = $"http://www.omdbapi.com/?apiKey={key}&t={movieTitle}";
-        
-        using var client = new WebClient();
-        _logger.LogInformation("Calling OMDB API with url: {url}", url);
-        return client.DownloadString(url);
+        var url = $"{_settings.BaseUrl}?apiKey={_settings.ApiKey}&i={id}"; 
+        return await _httpClient.GetStringAsync(url);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using tedMovieApp;
@@ -11,9 +12,11 @@ using tedMovieApp;
 namespace tedMovieApp.Migrations
 {
     [DbContext(typeof(MovieReviewApiContext))]
-    partial class MovieReviewApiContextModelSnapshot : ModelSnapshot
+    [Migration("20260211104845_AddedImdbId")]
+    partial class AddedImdbId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,17 +286,12 @@ namespace tedMovieApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("ReviewId");
 
                     b.HasIndex("MovieId");
 
                     b.HasIndex("ReviewId")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -356,12 +354,6 @@ namespace tedMovieApp.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("tedMovieApp.Movie", b =>

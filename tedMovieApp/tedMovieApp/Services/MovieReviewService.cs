@@ -1,0 +1,66 @@
+﻿using tedMovieApp.Repositories.Interfaces;
+using tedMovieApp.Services.Interfaces;
+
+namespace tedMovieApp.Services;
+
+public class MovieReviewService(IMovieReviewRepository movieReviewRepository) : IMovieReviewService
+{
+    public async Task<IEnumerable<Review>> GetAllMovieReviews()
+    {
+        var reviews = await movieReviewRepository.GetAll();
+        return reviews;
+    }
+
+    public async Task<Review> GetMovieReview(int id)
+    {
+        var review = await movieReviewRepository.GetReview(id);
+        return review ??  throw new InvalidOperationException($"Review with id {id} does not exist");
+    }
+
+    public async Task<Review> CreateMovieReview(int movieId, string userId, string title, string reviewText, int stars)
+    {
+        var review = new Review
+        {
+            Title = title,
+            ReviewText = reviewText,
+            Stars = stars,
+            MovieId = movieId,
+            UserId =  userId
+        };
+
+        await movieReviewRepository.Add(review);
+        return review;
+    }
+    public async Task<Review> DeleteMovieReview(int id, string userId, bool isAdmin)
+    {
+        var review = await movieReviewRepository.GetReview(id);
+        if (review == null)
+            throw new InvalidOperationException($"Review with id {id} does not exist");
+        
+        // authorization check
+        if (review.UserId != userId && !isAdmin)
+            throw new UnauthorizedAccessException("You are not allowed to delete this review");
+        
+        await movieReviewRepository.Delete(review);
+        return review;
+    }
+
+    public async Task<Review> UpdateMovieReview(int id, string userId, bool isAdmin, int movieId, string title, string reviewText, int stars)
+    {
+        var review = await movieReviewRepository.GetReview(id);
+        if (review == null)
+            throw new InvalidOperationException($"Review with id {id} does not exist");
+        
+        // authorization check
+        if (review.UserId != userId && !isAdmin)
+            throw new UnauthorizedAccessException("You are not allowed to update this review");
+        
+        review.Title = title;
+        review.ReviewText = reviewText;
+        review.Stars = stars;
+        review.MovieId = movieId;
+        
+        await movieReviewRepository.Update(review);
+        return review;
+    }
+}

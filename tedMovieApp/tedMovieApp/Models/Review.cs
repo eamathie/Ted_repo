@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 namespace tedMovieApp;
 
@@ -9,11 +10,9 @@ public class Review
 
     public string Title { get; set; }
 
-    //public Movie Movie { get; set; }
+    public string? UserId { get; set; } // foreign key to Identity User
+    public IdentityUser? User { get; set; }
     public string ReviewText { get; set; }
     [Range(1, 5)] public int Stars { get; set; }
-    public int MovieId { get; set; } // Foreign key
-    
-    [JsonIgnore]
-    public Movie Movie { get; set; } // Navigation property (optional but useful)
+    public int MovieId { get; set; }
 }
