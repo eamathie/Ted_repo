@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMovieSearch } from "./hooks/useMovieSearch";
+import "./CreateReviewSection.css";
 
 export default function CreateReviewSection({ isAuthenticated, onCreate }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -49,11 +50,10 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
   };
 
   return (
-    <section style={{ border: "1px solid #ccc", padding: 16, borderRadius: 8, display: "grid", gap: 12 }}>
-      <h2>Create Review</h2>
-
+    <section className="create-review-section">
+      <h2>Create Review</h2> <br />
       {/* Movie search */}
-      <div style={{ display: "grid", gap: 8 }}>
+      <div className="movie-search">
         <label>
           Search movie:
           <input
@@ -65,15 +65,15 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
         </label>
 
         {searchBusy && <div>Searching…</div>}
-        {searchError && <div style={{ color: "crimson" }}>{searchError}</div>}
+        {searchError && <div className="search-error">{searchError}</div>}
 
         {results.length > 0 && (
-          <div style={{ border: "1px solid #ddd", borderRadius: 6, background: "#fff", maxHeight: 240, overflowY: "auto" }}>
+          <div className="movie-search-results">
             {results.map((m) => (
               <button
                 key={m.id}
                 onClick={() => handlePick(m)}
-                style={{ width: "100%", textAlign: "left", padding: 8, borderBottom: "1px solid #eee", display: "flex", gap: 8, alignItems: "center" }}
+                className="search-result-item"
               >
                 {m.posterUrl ? (
                   <img
@@ -114,12 +114,12 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, maxWidth: 420 }}>
         <label>
           Title
-          <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input placeholder="Enter review title" value={title} onChange={(e) => setTitle(e.target.value)} required />
         </label>
 
         <label>
           Review text
-          <textarea rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} required />
+          <textarea placeholder="Enter review text" rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} required />
         </label>
 
         <label>

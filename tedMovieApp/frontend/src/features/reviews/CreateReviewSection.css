@@ -1,0 +1,34 @@
+.create-review-section {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+}
+.movie-search {
+  display: grid;
+  gap: 8px;
+}
+
+.search-error {
+  color: crimson;
+}
+
+.movie-search-results {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: grid;
+  gap: 8px;
+  align-items: center;
+}
+

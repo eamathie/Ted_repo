@@ -15,8 +15,9 @@ export default function HomePage() {
 
   return (
     <div className="home">
+      <h1>My Reviews</h1>
       <header className="home-header">
-        <h1>My Reviews</h1>
+        
         <div className="user-info">
           Logged in as <strong>{displayName}</strong>
           <button onClick={logout}>Log out</button>
