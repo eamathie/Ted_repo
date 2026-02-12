@@ -1,74 +1,51 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import InputField from "./InputField";
+// src/components/LoginForm.jsx
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
-/**
- * LoginForm
- * - On submit: sets auth, then navigates to Home ('/') or the originally requested page.
- */
-function LoginForm({ initialValues = { username: "", password: "" }, onSubmit }) {
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function LoginForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");        // <-- email, not username
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const [formData, setFormData] = useState({
-    username: initialValues.username ?? "",
-    password: initialValues.password ?? "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await login(email, password);              // <-- calls backend with { email, password }
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError("Login failed. Check your credentials.");
+    }
   };
 
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-
-  if (typeof onSubmit === "function") {
-    onSubmit(formData);
-  }
-
-  // Save the username in auth context (frontend-only)
-  login({ username: formData.username });
-
-  const dest = location.state?.from?.pathname || "/";
-  navigate(dest, { replace: true });
-};
-
-
-  const isDisabled = !formData.username || !formData.password;
-
   return (
-    <div className="main">
-    <form className="login-form" onSubmit={handleSubmit}>
-      <h2>Login</h2>
-
-      <InputField
-        name="username"
-        type="text"
-        label="Username"
-        value={formData.username}
-        onChange={handleChange}
+    <form onSubmit={onSubmit} style={{ display: "grid", gap: 8, maxWidth: 320 }}>
+      <h2>Log in</h2>
+      <input
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
       />
-      <InputField
-        name="password"
+      <input
         type="password"
-        label="Password"
-        value={formData.password}
-        onChange={handleChange}
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
       />
-
-      <button type="submit" disabled={isDisabled}>Log in</button>
+      <button type="submit">Log in</button>
+      {error && <div style={{ color: "crimson" }}>{error}</div>}
 
       <div style={{ marginTop: 12 }}>
         <span>Don’t have an account? </span>
         <Link to="/register">Register</Link>
       </div>
     </form>
-    </div>
   );
 }
-
-export default LoginForm;

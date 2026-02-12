@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tedMovieApp.Dtos; 
@@ -17,28 +18,32 @@ public class MovieReviewController : ControllerBase
         _movieReviewService = movieReviewService;
     }
     
-    [HttpGet]
     [Authorize]
+    [HttpGet]
     public async Task<ActionResult<Review>> GetAllMovieReviews()
     {
         var reviews = await _movieReviewService.GetAllMovieReviews();
         return Ok(reviews);
     }
 
-    [HttpGet("{id:int}")]
+
     [Authorize]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Review>> GetMovieReview(int id)
     {
         var review = await _movieReviewService.GetMovieReview(id);
         return Ok(review);
     }
 
-    [HttpPost]
     [Authorize]
+    [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
         var result = await _movieReviewService.CreateMovieReview(
-            dto.MovieId,
+            movieId,
+            userId,
             dto.Title,
             dto.ReviewText,
             dto.Stars
@@ -46,14 +51,21 @@ public class MovieReviewController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
     [HttpDelete("{id:int}")]
-    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Review>> DeleteMovieReview(int id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
-            await _movieReviewService.DeleteMovieReview(id);
+            await _movieReviewService.DeleteMovieReview(id, userId, isAdmin);
             return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
         }
         catch (KeyNotFoundException e)
         {
@@ -61,15 +73,20 @@ public class MovieReviewController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id:int}")]
-    [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<Review>> UpdateMovieReview(int id, ReviewDto dto)
+    public async Task<ActionResult<Review>> UpdateMovieReview(int id, int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
             var updatedReview = await _movieReviewService.UpdateMovieReview(
                 id,
-                dto.MovieId,
+                userId,
+                isAdmin,
+                movieId,
                 dto.Title,
                 dto.ReviewText,
                 dto.Stars
