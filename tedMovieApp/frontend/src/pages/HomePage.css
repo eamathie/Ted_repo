@@ -1,13 +1,35 @@
-.home {
+/* .home {
   display: grid;
   gap: 16px;
+  justify-content: center;
 }
+
 .home-header {
-  display: flex;
+  display: grid;
   justify-content: space-between;
   align-items: center;
-}
+} */
+
 .user-info {
-  display: flex;
+  display: grid;
   gap: 12px;
+}
+
+.home {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.home-actions .username {
+  margin-right: 12px;
+  color: #444;
 }

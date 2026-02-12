@@ -10,6 +10,7 @@ main {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* mix-blend-mode: difference; */
 }
 
 .card {
@@ -17,7 +18,7 @@ main {
 }
 
 /* Layout */
-.home {
+/* .home {
   max-width: 800px;
   margin: 0 auto;
   padding: 16px;
@@ -34,7 +35,7 @@ main {
 .home-actions .username {
   margin-right: 12px;
   color: #444;
-}
+} */
 
 /* Grid: one item per line */
 .reviews-grid {
