@@ -4,33 +4,36 @@ import RegistrationForm from "./components/RegistrationForm";
 import LoginForm from "./components/LoginForm";
 import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import Navbar from "./components/Navbar"
+import Header from "./components/Header";
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="App">
-      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/">Home</Link>
-      </nav>
+      <Header />
+      <Navbar />
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<LoginForm />} />
+          <Route
+            path="/register"
+            element={<RegistrationForm showThankYou={true} />}
+          />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </main>
+      <Footer />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/register"
-          element={<RegistrationForm showThankYou={true} />}
-        />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 // src/components/LoginForm.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 export default function LoginForm() {
@@ -41,6 +41,11 @@ export default function LoginForm() {
       />
       <button type="submit">Log in</button>
       {error && <div style={{ color: "crimson" }}>{error}</div>}
+
+      <div style={{ marginTop: 12 }}>
+        <span>Don’t have an account? </span>
+        <Link to="/register">Register</Link>
+      </div>
     </form>
   );
 }
