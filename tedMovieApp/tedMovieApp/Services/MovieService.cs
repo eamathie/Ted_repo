@@ -8,18 +8,12 @@ namespace tedMovieApp.Services;
 public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
-    private readonly ILogger<MovieService> _logger;
     private readonly IOmdbApiService _omdbApiService;
     private readonly IJsonProcessor _jsonProcessor;
     
-    public MovieService(
-        IMovieRepository movieRepository, 
-        ILogger<MovieService> logger, 
-        IOmdbApiService omdbApiService,
-        IJsonProcessor jsonProcessor)
+    public MovieService(IMovieRepository movieRepository, IOmdbApiService omdbApiService, IJsonProcessor jsonProcessor)
     {
         _movieRepository = movieRepository;
-        _logger = logger;
         _omdbApiService = omdbApiService;
         _jsonProcessor = jsonProcessor;
     }
@@ -66,10 +60,6 @@ public class MovieService : IMovieService
     public async Task<Movie> GetMovie(string id)
     {
         var movie = await _movieRepository.GetMovie(id);
-        
-        if (movie == null)
-            throw new InvalidOperationException($"Movie with id {id} not found");
-        
-        return movie;
+        return movie ?? throw new InvalidOperationException($"Movie with id {id} not found");
     }
 }
