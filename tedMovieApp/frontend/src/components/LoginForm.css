@@ -3,3 +3,9 @@
     gap: 8px;
     max-width: 320px;
 }
+.error {
+    color: crimson;
+}
+.register-link {
+    margin-top: 12px;
+}

@@ -4,6 +4,7 @@ import { useReviews } from "../features/reviews/hooks/useReviews";
 import CreateReviewSection from "../features/reviews/CreateReviewSection";
 import ReviewsListSection from "../features/reviews/ReviewsListSection";
 import ReviewDetailModal from "../components/ReviewDetailModal";
+import "./HomePage.css";
 
 export default function HomePage() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -13,10 +14,10 @@ export default function HomePage() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="home" style={{ display: "grid", gap: 16 }}>
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="home">
+      <header className="home-header">
         <h1>My Reviews</h1>
-        <div style={{ display: "flex", gap: 12 }}>
+        <div className="user-info">
           Logged in as <strong>{displayName}</strong>
           <button onClick={logout}>Log out</button>
         </div>
