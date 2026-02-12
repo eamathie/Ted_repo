@@ -1,11 +1,18 @@
 
-import { Routes, Route, Link } from "react-router-dom";
+import React from "react";
+import "./Header.css";
+import team_logo from "../assets/team_logo.png";
+import Navbar from "./Navbar";
 
 export default function Header() {
-  <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <Link to="/">Home</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/login">Login</Link>
-      </nav>
+    return (
+        <header>
+            <div className="header-container">
+                <img
+                    src={team_logo}
+                    id="header-logo"
+                    alt="App Logo" />
+            </div>
+        </header>
+    );
 }
-
