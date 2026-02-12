@@ -1,4 +1,4 @@
-﻿namespace tedMovieApp.Services;
+﻿namespace tedMovieApp.Services.Interfaces;
 
 public interface IOmdbApiService
 {

@@ -3,24 +3,17 @@ using tedMovieApp.Services.Interfaces;
 
 namespace tedMovieApp.Services;
 
-public class MovieReviewService : IMovieReviewService
+public class MovieReviewService(IMovieReviewRepository movieReviewRepository) : IMovieReviewService
 {
-    private readonly IMovieReviewRepository _movieReviewRepository;
-    
-    public MovieReviewService(IMovieReviewRepository movieReviewRepository)
-    {
-        _movieReviewRepository = movieReviewRepository;
-    }
-
     public async Task<IEnumerable<Review>> GetAllMovieReviews()
     {
-        var reviews = await _movieReviewRepository.GetAll();
+        var reviews = await movieReviewRepository.GetAll();
         return reviews;
     }
 
     public async Task<Review> GetMovieReview(int id)
     {
-        var review = await _movieReviewRepository.GetReview(id);
+        var review = await movieReviewRepository.GetReview(id);
         return review ??  throw new InvalidOperationException($"Review with id {id} does not exist");
     }
 
@@ -35,12 +28,12 @@ public class MovieReviewService : IMovieReviewService
             UserId =  userId
         };
 
-        await _movieReviewRepository.Add(review);
+        await movieReviewRepository.Add(review);
         return review;
     }
     public async Task<Review> DeleteMovieReview(int id, string userId, bool isAdmin)
     {
-        var review = await _movieReviewRepository.GetReview(id);
+        var review = await movieReviewRepository.GetReview(id);
         if (review == null)
             throw new InvalidOperationException($"Review with id {id} does not exist");
         
@@ -48,13 +41,13 @@ public class MovieReviewService : IMovieReviewService
         if (review.UserId != userId && !isAdmin)
             throw new UnauthorizedAccessException("You are not allowed to delete this review");
         
-        await _movieReviewRepository.Delete(review);
+        await movieReviewRepository.Delete(review);
         return review;
     }
 
     public async Task<Review> UpdateMovieReview(int id, string userId, bool isAdmin, int movieId, string title, string reviewText, int stars)
     {
-        var review = await _movieReviewRepository.GetReview(id);
+        var review = await movieReviewRepository.GetReview(id);
         if (review == null)
             throw new InvalidOperationException($"Review with id {id} does not exist");
         
@@ -67,7 +60,7 @@ public class MovieReviewService : IMovieReviewService
         review.Stars = stars;
         review.MovieId = movieId;
         
-        await _movieReviewRepository.Update(review);
+        await movieReviewRepository.Update(review);
         return review;
     }
 }

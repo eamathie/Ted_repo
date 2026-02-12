@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
+namespace tedMovieApp.Controllers;
+
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
@@ -76,4 +78,3 @@ public class AuthController : ControllerBase
     public record LoginDto(string Email, string Password);
     public record RegisterDto(string Email, string Password);
 }
-
