@@ -14,7 +14,9 @@ public class MovieReviewRepository : IMovieReviewRepository
     
     public async Task<IEnumerable<Review>> GetAll()
     {
-        return await _dbContext.Reviews.ToListAsync();
+        return await _dbContext.Reviews
+            .Include(r => r.User)
+            .ToListAsync();
     }
 
     public async Task<Review?> GetReview(int id)

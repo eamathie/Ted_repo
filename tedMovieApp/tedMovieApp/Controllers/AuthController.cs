@@ -10,14 +10,11 @@ using Microsoft.IdentityModel.Tokens;
 public class AuthController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager; 
     private readonly IConfiguration _config;
 
-    public AuthController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-        IConfiguration config)
+    public AuthController(UserManager<IdentityUser> userManager, IConfiguration config)
     {
         _userManager = userManager; 
-        _signInManager = signInManager; 
         _config = config;
     }
 
@@ -40,13 +37,16 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login(LoginDto dto)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email); 
+        if (user == null) 
+            return Unauthorized(); 
         
-        if (user == null) return Unauthorized(); 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false); 
-        if (!result.Succeeded) return Unauthorized(); 
-            var roles = await _userManager.GetRolesAsync(user); 
-        
+        var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
+        if (!passwordValid)
+            return Unauthorized();
+
+        var roles = await _userManager.GetRolesAsync(user); 
         var token = GenerateJwtToken(user, roles); 
+        
         return Ok(new { token });
     }
 
@@ -57,6 +57,7 @@ public class AuthController : ControllerBase
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); 
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id), 
             new Claim(JwtRegisteredClaimNames.Email, user.Email), 
             new Claim(ClaimTypes.Name, user.UserName)

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tedMovieApp.Dtos; 
@@ -38,8 +39,11 @@ public class MovieReviewController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Review>> CreateMovieReview(int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
         var result = await _movieReviewService.CreateMovieReview(
             movieId,
+            userId,
             dto.Title,
             dto.ReviewText,
             dto.Stars
@@ -47,14 +51,21 @@ public class MovieReviewController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<Review>> DeleteMovieReview(int id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
-            await _movieReviewService.DeleteMovieReview(id);
+            await _movieReviewService.DeleteMovieReview(id, userId, isAdmin);
             return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
         }
         catch (KeyNotFoundException e)
         {
@@ -62,14 +73,19 @@ public class MovieReviewController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<ActionResult<Review>> UpdateMovieReview(int id, int movieId, ReviewDto dto)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var isAdmin = User.IsInRole("Admin");
+        
         try
         {
             var updatedReview = await _movieReviewService.UpdateMovieReview(
                 id,
+                userId,
+                isAdmin,
                 movieId,
                 dto.Title,
                 dto.ReviewText,
