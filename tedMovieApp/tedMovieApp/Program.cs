@@ -46,6 +46,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 builder.Services.AddSingleton<IJsonProcessor, JsonProcessor>();
 builder.Services.AddScoped<IMovieReviewService, MovieReviewService>();
@@ -54,14 +56,26 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 
-builder.Services.AddDbContext<MovieReviewApiContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+var dbHost = builder.Configuration["DB_HOST"];
+var dbName = builder.Configuration["DB_NAME"];
+var dbUser = builder.Configuration["DB_USER"];
+var dbPass = builder.Configuration["DB_PASS"];
+
+var connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPass}";
+
+builder.Services.AddDbContext<MovieReviewApiContext>(options =>
+    options.UseNpgsql(connectionString));
+
 
 builder.Services.Configure<OmdbSettings>( builder.Configuration.GetSection("Omdb"));
 builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 
-var jwtSection = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSection["Key"]);
+var jwtKey = builder.Configuration["JWT_KEY"];
+var jwtIssuer = builder.Configuration["JWT_ISSUER"];
+var jwtAudience = builder.Configuration["JWT_AUDIENCE"];
+
+var key = Encoding.UTF8.GetBytes(jwtKey);
+
 
 builder.Services.AddAuthentication(options =>
     {
@@ -75,8 +89,8 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSection["ValidIssuer"],
-            ValidAudience = jwtSection["ValidAudience"],
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
@@ -97,6 +111,9 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
+    var db = scope.ServiceProvider.GetRequiredService<MovieReviewApiContext>(); 
+    db.Database.Migrate();
+    
     await IdentitySeeder.SeedRolesAndAdmin(scope.ServiceProvider);
 }
 
