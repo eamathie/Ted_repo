@@ -6,6 +6,10 @@ export function fetchAllReviews() {
   return httpGet("/api/reviews");
 }
 
+export function fetchAllReviewsUser(){
+ return httpGet("/api/reviews/mine");
+}
+
 /** POST /api/reviews?movieId=123 with body { title, reviewText, stars } */
 export function createReview(movieId, { title, reviewText, stars }) {
   if (movieId == null || movieId === "") {
@@ -23,3 +27,5 @@ export function deleteReview(id) {
   if (!id) return Promise.reject(new Error("id is required"));
   return httpDelete(`/api/reviews/${id}`);
 }
+
+

@@ -10,6 +10,8 @@ import "./App.css";
 import Footer from "./components/Footer";
 import MyReviews from "./components/MyReviews";
 
+import Reviews from "./pages/Reviews";
+
 function App() {
   return (
     <div className="App">
@@ -25,7 +27,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path ="/my_reviews" element= {<MyReviews />} />
+          <Route path ="/my_reviews" element= {<Reviews />} />
           <Route path="/login" element={<LoginForm />} />
           <Route
             path="/register"
