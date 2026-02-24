@@ -15,11 +15,7 @@ export default function HomePage() {
   return (
     <div className="home" style={{ display: "grid", gap: 16 }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>My Reviews</h1>
-        <div style={{ display: "flex", gap: 12 }}>
-          Logged in as <strong>{displayName}</strong>
-          <button onClick={logout}>Log out</button>
-        </div>
+        <h1>Reviews</h1>
       </header>
 
       <CreateReviewSection
