@@ -9,11 +9,9 @@ export default function MyReviewsPage() {
   const [error, setError] = useState(null);
   const [selected, setSelected] = useState(null);
 
-  // Use the fields you actually expose from AuthContext
   const { token, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Don't attempt to fetch until we've determined auth state and we have a token
     if (!isAuthenticated || !token) return;
 
     let cancelled = false;
@@ -29,8 +27,6 @@ export default function MyReviewsPage() {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
-          // If you're not using a Vite proxy and call an absolute backend URL with cookies, add:
-          // credentials: "include",
         });
 
         if (!res.ok) {
