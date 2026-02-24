@@ -27,6 +27,8 @@ services:
       db:
         condition: service_healthy
     environment:
+      OMDB__ApiKey: ${OMDB__ApiKey} 
+      OMDB__BaseUrl: ${OMDB__BaseUrl}
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}

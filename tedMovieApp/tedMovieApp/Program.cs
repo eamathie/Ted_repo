@@ -24,20 +24,17 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 // CORS for your React dev origin
-var allowFrontend = "AllowFrontend";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: allowFrontend, policy =>
+    options.AddPolicy("FrontendPolicy", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:5173", // Vite
-            "http://localhost:3000"  // CRA if you ever use it
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-        // Do NOT add .AllowCredentials() here if you’re not sending cookies
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
+
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -69,6 +66,7 @@ builder.Services.AddDbContext<MovieReviewApiContext>(options =>
 
 builder.Services.Configure<OmdbSettings>( builder.Configuration.GetSection("Omdb"));
 builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
+
 
 var jwtKey = builder.Configuration["JWT_KEY"];
 var jwtIssuer = builder.Configuration["JWT_ISSUER"];
@@ -113,7 +111,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<MovieReviewApiContext>(); 
     db.Database.Migrate();
-    
+
     await IdentitySeeder.SeedRolesAndAdmin(scope.ServiceProvider);
 }
 
@@ -124,10 +122,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else 
+    app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
 
-app.UseCors(allowFrontend);
+app.UseCors("FrontendPolicy");
+
 
 app.UseAuthentication();
 app.UseAuthorization();
