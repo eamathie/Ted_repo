@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import ReviewsListSection from "../features/reviews/ReviewsListSection";
 import ReviewDetailModal from "../components/ReviewDetailModal";
+import { fetchAllReviewsUser } from "../services/api/reviewsApi";
 
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);
@@ -12,46 +13,34 @@ export default function MyReviewsPage() {
   const { token, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated || !token) return;
+  if (!isAuthenticated || !token) return;
 
-    let cancelled = false;
+  let cancelled = false;
 
-    (async () => {
-      try {
-        setStatus("loading");
-        setError(null);
+  (async () => {
+    try {
+      setStatus("loading");
+      setError(null);
 
-        const res = await fetch("/api/reviews/mine", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      // res IS the parsed JSON
+      const data = await fetchAllReviewsUser();
 
-        if (!res.ok) {
-          const text = await res.text();
-          const msg = text || `Failed to load your reviews (${res.status})`;
-          throw new Error(msg);
-        }
-
-        const data = await res.json();
-        if (!cancelled) {
-          setReviews(Array.isArray(data) ? data : [data]);
-          setStatus("success");
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setError(e.message || "Unknown error");
-          setStatus("error");
-        }
+      if (!cancelled) {
+        setReviews(Array.isArray(data) ? data : [data]);
+        setStatus("success");
       }
-    })();
+    } catch (e) {
+      if (!cancelled) {
+        setError(e.message || "Unknown error");
+        setStatus("error");
+      }
+    }
+  })();
 
-    return () => {
-      cancelled = true;
-    };
-  }, [isAuthenticated, token]);
+  return () => {
+    cancelled = true;
+  };
+}, [isAuthenticated, token]);
 
   if (!isAuthenticated) {
     return (
