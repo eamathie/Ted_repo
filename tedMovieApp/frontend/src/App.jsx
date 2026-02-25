@@ -8,7 +8,9 @@ import Navbar from "./components/Navbar"
 import Header from "./components/Header";
 import "./App.css";
 import Footer from "./components/Footer";
-import MyReviews from "./components/MyReviews";
+
+import Reviews from "./pages/Reviews";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -25,7 +27,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path ="/my_reviews" element= {<MyReviews />} />
+          <Route path ="/my_reviews" element= {<Reviews />} />
+          <Route path = "/profile" element = {<Profile />} />
           <Route path="/login" element={<LoginForm />} />
           <Route
             path="/register"
