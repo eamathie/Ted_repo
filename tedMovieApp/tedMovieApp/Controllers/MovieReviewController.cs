@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using tedMovieApp.Dtos; 
 using tedMovieApp.Services.Interfaces;
 
@@ -42,6 +43,16 @@ public class MovieReviewController(IMovieReviewService movieReviewService) : Con
             dto.Stars
             ); 
         return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("mine")]
+    public async Task<ActionResult<Review>> GetMovieReviewsUser()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var reviews = await movieReviewService.GetMovieReviewsUser(userId);
+        return Ok(reviews);
     }
 
     [Authorize]

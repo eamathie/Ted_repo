@@ -14,13 +14,9 @@ export default function HomePage() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="home">
-      <h1>My Reviews</h1>
-      <header className="home-header">
-        <div className="user-info">
-          Logged in as <strong>{displayName}</strong>
-          <button onClick={logout}>Log out</button>
-        </div>
+    <div className="home" style={{ display: "grid", gap: 16 }}>
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Reviews</h1>
       </header>
 
       <CreateReviewSection
