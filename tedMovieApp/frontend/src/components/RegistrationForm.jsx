@@ -5,6 +5,7 @@ import InputField from "./InputField";
 import { useAuth } from "../auth/AuthContext"; // to auto-login
 // Alternatively, you can import register from authApi directly:
 // import { register as apiRegister } from "../api/authApi";
+import styles from "./RegistrationForm.module.css";
 
 function RegistrationForm({
   initialValues = { email: "", password: "" },
@@ -46,6 +47,7 @@ function RegistrationForm({
   const inputFields = [
     { name: "email", type: "text", label: "Email" },
     { name: "password", type: "password", label: "Password" },
+    // { name: "passwordConfirm", type: "password", label: "Confirm Password" }
   ];
 
   if (showThankYou && submitted) {
@@ -61,21 +63,23 @@ function RegistrationForm({
   }
 
   return (
-    <form className="registration-form" onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      {inputFields.map((inputField) => (
-        <InputField
-          key={inputField.name}
-          name={inputField.name}
-          type={inputField.type}
-          label={inputField.label}
-          value={formData[inputField.name]}
-          onChange={handleChange}
-        />
-      ))}
-      <button type="submit">Register</button>
-      {error && <div style={{ color: "crimson" }}>{error}</div>}
-    </form>
+    <div className={styles.container}>
+      <form className={styles.registrationForm} onSubmit={handleSubmit}>
+        <h2>Register</h2>
+        {inputFields.map((inputField) => (
+          <InputField
+            key={inputField.name}
+            name={inputField.name}
+            type={inputField.type}
+            label={inputField.label}
+            value={formData[inputField.name]}
+            onChange={handleChange}
+          />
+        ))}
+        <button type="submit" className={styles.btnSignin}>Register</button>
+        {error && <div style={{ color: "crimson" }}>{error}</div>}
+      </form>
+    </div>
   );
 }
 

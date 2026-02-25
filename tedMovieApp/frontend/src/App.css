@@ -4,37 +4,37 @@
   text-align: center;
 }
 
-main {
+/* main {
   margin: 0;
   display: grid;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
+} */
 
-.card {
+/* .card {
   padding: 2em;
-}
+} */
 
 /* Layout */
-.home {
+/* .home {
   max-width: 800px;
   margin: 0 auto;
   padding: 16px;
-}
+} */
 
-.home-header {
+/* .home-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 16px;
-}
+} */
 
-.home-actions .username {
+/* .home-actions .username {
   margin-right: 12px;
   color: #444;
-}
+} */
 
 /* Grid: one item per line */
 .reviews-grid {
