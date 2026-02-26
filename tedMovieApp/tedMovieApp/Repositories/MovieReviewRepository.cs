@@ -12,6 +12,14 @@ public class MovieReviewRepository(MovieReviewApiContext dbContext) : IMovieRevi
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Review>> GetAllUser(string id)
+    {
+        return await dbContext.Reviews
+            .Include(r => r.User)
+            .Where(r => r.UserId == id)
+            .ToListAsync();
+    }
+
     public async Task<Review?> GetReview(int id)
     {
         return await dbContext.Reviews.FirstOrDefaultAsync(review => review.ReviewId == id);

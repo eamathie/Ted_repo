@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMovieSearch } from "./hooks/useMovieSearch";
+import styles from "./CreateReviewSection.module.css";
 
 export default function CreateReviewSection({ isAuthenticated, onCreate }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -49,11 +50,11 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
   };
 
   return (
-    <section style={{ border: "1px solid #ccc", padding: 16, borderRadius: 8, display: "grid", gap: 12 }}>
-      <h2>Create Review</h2>
+    <section className={styles.section}>
+      <h2 >Create Review</h2>
 
       {/* Movie search */}
-      <div style={{ display: "grid", gap: 8 }}>
+      <div className={styles.containerMovieSearch}>
         <label>
           Search movie:
           <input
@@ -65,7 +66,7 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
         </label>
 
         {searchBusy && <div>Searching…</div>}
-        {searchError && <div style={{ color: "crimson" }}>{searchError}</div>}
+        {searchError && <div className={styles.error}>{searchError}</div>}
 
         {results.length > 0 && (
           <div style={{ border: "1px solid #ddd", borderRadius: 6, background: "#fff", maxHeight: 240, overflowY: "auto" }}>
@@ -108,10 +109,10 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
       </div>
 
       {/* Create review form */}
-      {error && <div style={{ color: "crimson" }}>{error}</div>}
+      {error && <div className={styles.error}>{error}</div>}
       {message && <div style={{ color: "green" }}>{message}</div>}
 
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, maxWidth: 420 }}>
+      <form onSubmit={handleSubmit} className={styles.movieForm}>
         <label>
           Title
           <input value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -119,6 +120,7 @@ export default function CreateReviewSection({ isAuthenticated, onCreate }) {
 
         <label>
           Review text
+          <br />
           <textarea rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} required />
         </label>
 

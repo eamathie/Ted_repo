@@ -54,9 +54,14 @@ public class AuthController : ControllerBase
 
     private string GenerateJwtToken(IdentityUser user, IList<string> roles)
     {
+
+        var keyString = _config["JWT_KEY"]; 
+        var issuer = _config["JWT_ISSUER"]; 
+        var audience = _config["JWT_AUDIENCE"];
+
         var jwtSection = _config.GetSection("Jwt"); 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection["Key"])); 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); 
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString)); 
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -67,9 +72,10 @@ public class AuthController : ControllerBase
         
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r))); 
         var token = new JwtSecurityToken( 
-            issuer: jwtSection["ValidIssuer"], 
-            audience: jwtSection["ValidAudience"], 
-            claims: claims, expires: DateTime.UtcNow.AddHours(1), 
+            issuer: issuer, 
+            audience: audience, 
+            claims: claims, 
+            expires: DateTime.UtcNow.AddHours(1), 
             signingCredentials: creds); 
         
         return new JwtSecurityTokenHandler().WriteToken(token);

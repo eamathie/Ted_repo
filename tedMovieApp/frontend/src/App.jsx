@@ -9,12 +9,18 @@ import Header from "./components/Header";
 import "./App.css";
 import Footer from "./components/Footer";
 
+import Reviews from "./pages/Reviews";
+import Profile from "./pages/Profile";
+import ReviewModal from "./components/Modals/ReviewModal";
+
 function App() {
   return (
     <div className="App">
       <Header />
       <Navbar />
+      {/* <ReviewModal /> */}
       <main>
+        
         <Routes>
           <Route
             path="/"
@@ -24,6 +30,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path ="/my_reviews" element= {<Reviews />} />
+          <Route path = "/profile" element = {<Profile />} />
           <Route path="/login" element={<LoginForm />} />
           <Route
             path="/register"
