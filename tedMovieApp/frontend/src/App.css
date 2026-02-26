@@ -66,13 +66,13 @@
   cursor: pointer;
 }
 
-/* main {
+main {
   margin: 0;
   display: grid;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-} */
+}
 
 /* .card {
   padding: 2em;
@@ -99,25 +99,25 @@
 } */
 
 /* Grid: one item per line */
-/* .reviews-grid {
+ .reviews-grid {
   display: grid;
-  grid-template-columns: 1fr; */
+  grid-template-columns: 1fr; 
 /* one per line */
-/* gap: 12px;
-} */
+ gap: 12px;
+ }
 
 /* Empty state */
-/* .no-reviews {
+.no-reviews {
   background: #fafafa;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 24px;
   text-align: center;
   color: #666;
-} */
+}
 
 /* Review card as a button for accessibility + click affordance */
-/* .review-card {
+.review-card {
   width: 100%;
   text-align: left;
   background: #fff;
@@ -152,10 +152,10 @@
 .review-card__preview {
   margin: 0;
   color: #555;
-} */
+}
 
 /* Modal */
-/* .modal-overlay {
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15, 18, 22, 0.45);
@@ -196,4 +196,4 @@
 .modal-content {
   margin-top: 12px;
   line-height: 1.5;
-} */
+}
