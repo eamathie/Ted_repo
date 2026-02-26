@@ -50,19 +50,15 @@ export default function MyReviewsPage() {
           <p>Please log in to view your reviews.</p>
         </div>
 
-        <div className="skeleton-container">
+        {/* <div className="skeleton-container">
           <div className="skeleton-item">
             <div className="movieTitle">Movie Title</div>
             <div className="reviewTitle">Movie Review Title</div>
               <div className="reviewText">Movie review paragraph</div>
             <div className="moviePoster">this is the movie poster</div>
           </div>
-          
-          
+        </div> */}
 
-
-
-        </div>
       </div>
     );
   }
