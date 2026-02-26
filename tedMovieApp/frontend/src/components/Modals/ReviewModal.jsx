@@ -12,7 +12,9 @@ function ReviewModal() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <CreateReviewSection
-      />
+                isAuthenticated={isAuthenticated}
+                onCreate={create}
+              />
       </Modal>
     </div>
   );

@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <Header />
       <Navbar />
-      <ReviewModal />
+      {/* <ReviewModal /> */}
       <main>
         
         <Routes>
