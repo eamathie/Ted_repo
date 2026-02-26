@@ -4,6 +4,68 @@
   text-align: center;
 }
 
+.error {
+  color: crimson;
+}
+
+.skeleton-container {
+  border: solid 1px black;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+
+.skeleton-item {
+  border: 1px solid black;
+  height: 300px;
+  width: 500px;
+  display: grid;
+  grid-template-areas:
+    "image movieTitle"
+    "image reviewTitle"
+    "image reviewText";
+  /* border: 1px solid #ddd; */
+  grid-template-columns: 30% 70%;
+  grid-template-rows: 20% 20% 60%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.skeleton-item .movieTitle {
+  grid-area: movieTitle;
+  border: solid 1px black;
+  padding: 10px;
+  }
+
+.skeleton-item .reviewTitle {
+  grid-area: reviewTitle;
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.skeleton-item .reviewText {
+  grid-area: reviewText;
+  border: solid 1px black;
+  padding: 10px;
+}
+
+.skeleton-item .moviePoster {
+  grid-area: image;
+  border: solid 1px black;
+  padding: 10px;
+}
+
+
+.skeleton-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
 /* main {
   margin: 0;
   display: grid;
@@ -37,25 +99,25 @@
 } */
 
 /* Grid: one item per line */
-.reviews-grid {
+/* .reviews-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  /* one per line */
-  gap: 12px;
-}
+  grid-template-columns: 1fr; */
+/* one per line */
+/* gap: 12px;
+} */
 
 /* Empty state */
-.no-reviews {
+/* .no-reviews {
   background: #fafafa;
   border: 1px solid #eee;
   border-radius: 8px;
   padding: 24px;
   text-align: center;
   color: #666;
-}
+} */
 
 /* Review card as a button for accessibility + click affordance */
-.review-card {
+/* .review-card {
   width: 100%;
   text-align: left;
   background: #fff;
@@ -90,10 +152,10 @@
 .review-card__preview {
   margin: 0;
   color: #555;
-}
+} */
 
 /* Modal */
-.modal-overlay {
+/* .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15, 18, 22, 0.45);
@@ -134,4 +196,4 @@
 .modal-content {
   margin-top: 12px;
   line-height: 1.5;
-}
+} */

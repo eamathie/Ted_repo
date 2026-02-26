@@ -11,13 +11,16 @@ import Footer from "./components/Footer";
 
 import Reviews from "./pages/Reviews";
 import Profile from "./pages/Profile";
+import ReviewModal from "./components/Modals/ReviewModal";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Navbar />
+      <ReviewModal />
       <main>
+        
         <Routes>
           <Route
             path="/"

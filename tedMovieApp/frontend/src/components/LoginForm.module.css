@@ -15,7 +15,7 @@
     border-radius: 5px;
 }
 
-input {
+/* input {
     width: 200px;
     height: 20px;
     background: #eeeded;
@@ -26,7 +26,7 @@ input {
     border: none;
     outline: none;
     border-radius: 5px;
-}
+} */
 
 .btnLogin {
     width: 100px;

@@ -13,40 +13,56 @@ export default function MyReviewsPage() {
   const { token, isAuthenticated } = useAuth();
 
   useEffect(() => {
-  if (!isAuthenticated || !token) return;
+    if (!isAuthenticated || !token) return;
 
-  let cancelled = false;
+    let cancelled = false;
 
-  (async () => {
-    try {
-      setStatus("loading");
-      setError(null);
+    (async () => {
+      try {
+        setStatus("loading");
+        setError(null);
 
-      // res IS the parsed JSON
-      const data = await fetchAllReviewsUser();
+        // res IS the parsed JSON
+        const data = await fetchAllReviewsUser();
 
-      if (!cancelled) {
-        setReviews(Array.isArray(data) ? data : [data]);
-        setStatus("success");
+        if (!cancelled) {
+          setReviews(Array.isArray(data) ? data : [data]);
+          setStatus("success");
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setError(e.message || "Unknown error");
+          setStatus("error");
+        }
       }
-    } catch (e) {
-      if (!cancelled) {
-        setError(e.message || "Unknown error");
-        setStatus("error");
-      }
-    }
-  })();
+    })();
 
-  return () => {
-    cancelled = true;
-  };
-}, [isAuthenticated, token]);
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, token]);
 
   if (!isAuthenticated) {
     return (
-      <div style={{ padding: 16 }}>
-        <h1>My Reviews</h1>
-        <p>Please log in to view your reviews.</p>
+      <div>
+        <div style={{ padding: 16 }}>
+          <h1>My Reviews</h1>
+          <p>Please log in to view your reviews.</p>
+        </div>
+
+        <div className="skeleton-container">
+          <div className="skeleton-item">
+            <div className="movieTitle">Movie Title</div>
+            <div className="reviewTitle">Movie Review Title</div>
+              <div className="reviewText">Movie review paragraph</div>
+            <div className="moviePoster">this is the movie poster</div>
+          </div>
+          
+          
+
+
+
+        </div>
       </div>
     );
   }
