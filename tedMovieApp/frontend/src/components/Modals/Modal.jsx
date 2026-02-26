@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import "./modal.css"; // Optional for styling
+import styles from "./Modal.module.css";
 
 // Modal Component
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null; // Don't render if modal is closed
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay" onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={onClose}>
       <div
-        className="modal-content"
+        className={styles.modalContent}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        <button className="close-btn" onClick={onClose}>
+        <button className={styles.closeBtn} onClick={onClose}>
           &times;
         </button>
         {children}
