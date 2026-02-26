@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { createReview } from "../services/api/reviewsApi";
+import { createReview } from "../../services/api/reviewsApi";
+// import styles from "./CreateReviewForm.modal.css";
 
 export default function CreateReviewForm({ movieId, onCreated }) {
   const [title, setTitle] = useState("");
@@ -33,7 +34,7 @@ export default function CreateReviewForm({ movieId, onCreated }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10, maxWidth: 400 }}>
+    <form onSubmit={handleSubmit}>
       <h3>Create Review</h3>
 
       <input

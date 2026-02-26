@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import styles from "./LoginForm.module.css";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -23,7 +24,8 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 8, maxWidth: 320 }}>
+    <div className={styles.container}>
+    <form className={styles.loginForm} onSubmit={onSubmit} >
       <h2>Log in</h2>
       <input
         type="email"
@@ -31,6 +33,7 @@ export default function LoginForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
+        className={styles.inpEmail}
       />
       <input
         type="password"
@@ -38,8 +41,9 @@ export default function LoginForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
+        className={styles.inpPassword}
       />
-      <button type="submit">Log in</button>
+      <button type="submit" className={styles.btnLogin}>Log in</button>
       {error && <div style={{ color: "crimson" }}>{error}</div>}
 
       <div style={{ marginTop: 12 }}>
@@ -47,5 +51,6 @@ export default function LoginForm() {
         <Link to="/register">Register</Link>
       </div>
     </form>
+    </div>
   );
 }

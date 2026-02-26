@@ -40,7 +40,7 @@ export default function ReviewsListSection({
   return (
     <section>
       {status === "loading" && <p>Loading reviews…</p>}
-      {status === "error" && <div style={{ color: "crimson" }}>{error}</div>}
+      {status === "error" && <div className="error">{error}</div>}
       {status === "success" && (
         <ReviewList
           reviews={reviews}
