@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using tedMovieApp.Dtos;
 
-namespace tedMovieApp.Services;
+namespace tedMovieApp.Tools;
 
 public class JsonProcessor : IJsonProcessor
 {

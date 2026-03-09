@@ -56,27 +56,26 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieReviewRepository, MovieReviewRepository>();
 
 
-var dbHost = builder.Configuration["DB_HOST"];
-var dbName = builder.Configuration["DB_NAME"];
-var dbUser = builder.Configuration["DB_USER"];
-var dbPass = builder.Configuration["DB_PASS"];
+// loading from .env and verifying all keys are set
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, ".env");
+DotEnvLoader.Load(dotenv);
 
-var connectionString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPass}";
+// setting connection string
+var connectionString = DotEnvLoader.GenerateConnectionString();
 
 builder.Services.AddDbContext<MovieReviewApiContext>(options =>
     options.UseNpgsql(connectionString));
-
 
 builder.Services.Configure<OmdbSettings>( builder.Configuration.GetSection("Omdb"));
 builder.Services.AddScoped<IOmdbApiService, OmdbApiService>();
 
 
-var jwtKey = builder.Configuration["JWT_KEY"];
-var jwtIssuer = builder.Configuration["JWT_ISSUER"];
-var jwtAudience = builder.Configuration["JWT_AUDIENCE"];
-
-var key = Encoding.UTF8.GetBytes(jwtKey);
-
+// setting up JWT authentication 
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+var key = Encoding.UTF8.GetBytes(jwtKey!);
 
 builder.Services.AddAuthentication(options =>
     {

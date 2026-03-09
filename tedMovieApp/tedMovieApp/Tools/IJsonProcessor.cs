@@ -1,6 +1,6 @@
 ﻿using tedMovieApp.Dtos;
 
-namespace tedMovieApp.Services;
+namespace tedMovieApp.Tools;
 
 public interface IJsonProcessor
 {
