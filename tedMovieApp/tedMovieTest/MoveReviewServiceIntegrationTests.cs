@@ -79,7 +79,7 @@ namespace tedMovieTest
 
             await _service.UpdateMovieReview(
                 id: review.ReviewId,
-                userId: review.UserId,
+                userId: review.UserId!,
                 isAdmin: false,
                 movieId: 99,
                 title: "Updated Title",
@@ -106,7 +106,7 @@ namespace tedMovieTest
             _db.Reviews.Add(review);
             await _db.SaveChangesAsync();
 
-            await _service.DeleteMovieReview(review.ReviewId, review.UserId, isAdmin: false);
+            await _service.DeleteMovieReview(review.ReviewId, review.UserId!, isAdmin: false);
 
             var exists = await _db.Reviews.AnyAsync(r => r.ReviewId == review.ReviewId);
             Assert.That(exists, Is.False);
