@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
-using tedMovieApp.Dtos; 
+using tedMovieApp.Models.Dtos;
+using tedMovieApp.Models;
 using tedMovieApp.Services.Interfaces;
 
 

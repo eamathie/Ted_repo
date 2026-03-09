@@ -1,8 +1,9 @@
 ﻿using NSubstitute;
-using tedMovieApp;
+using tedMovieApp.Models;
 using tedMovieApp.Services;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Tools;
 
 namespace tedMovieTest
 {
@@ -26,7 +27,7 @@ namespace tedMovieTest
         [Test]
         public async Task GetMovie_ReturnsMovie_WhenFound()
         {
-            var movie = new Movie { ImdbId = "tt123" };
+            var movie = new Movie { Title = "Test", Description = "Test", Genre = "Test", Length = "Test", PosterUrl = "Test", ImdbId = "tt123" };
             _repo.GetMovie("tt123").Returns(movie);
 
             var result = await _service.GetMovie("tt123");
@@ -36,7 +37,7 @@ namespace tedMovieTest
         [Test]
         public void GetMovie_Throws_WhenNotFound()
         {
-            _repo.GetMovie("missing").Returns((Movie)null);
+            _repo.GetMovie("missing").Returns(null as Movie);
 
             Assert.That(
                 async () => await _service.GetMovie("missing"),

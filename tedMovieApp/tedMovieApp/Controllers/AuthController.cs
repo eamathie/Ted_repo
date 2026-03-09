@@ -12,12 +12,10 @@ namespace tedMovieApp.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly IConfiguration _config;
 
-    public AuthController(UserManager<IdentityUser> userManager, IConfiguration config)
+    public AuthController(UserManager<IdentityUser> userManager)
     {
         _userManager = userManager; 
-        _config = config;
     }
 
     [HttpPost("register")]
@@ -55,19 +53,18 @@ public class AuthController : ControllerBase
     private string GenerateJwtToken(IdentityUser user, IList<string> roles)
     {
 
-        var keyString = _config["JWT_KEY"]; 
-        var issuer = _config["JWT_ISSUER"]; 
-        var audience = _config["JWT_AUDIENCE"];
+        var keyString = Environment.GetEnvironmentVariable("JWT_KEY"); 
+        var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"); 
+        var audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 
-        var jwtSection = _config.GetSection("Jwt"); 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString)); 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id), 
-            new Claim(JwtRegisteredClaimNames.Email, user.Email), 
-            new Claim(ClaimTypes.Name, user.UserName)
+            new(ClaimTypes.NameIdentifier, user.Id),
+            new(JwtRegisteredClaimNames.Sub, user.Id), 
+            new(JwtRegisteredClaimNames.Email, user.Email), 
+            new(ClaimTypes.Name, user.UserName)
         }; 
         
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r))); 

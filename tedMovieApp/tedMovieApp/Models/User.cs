@@ -1,9 +1,9 @@
-namespace tedMovieApp;
+namespace tedMovieApp.Models;
 
 public class User
 {
     public int UserId { get; set; }
-    public string Name { get; set; }
-    public List<Review> Reviews { get; set; }
+    public required string Name { get; set; }
+    public List<Review>? Reviews { get; set; }
     
 }

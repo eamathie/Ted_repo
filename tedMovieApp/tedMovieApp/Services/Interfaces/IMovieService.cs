@@ -1,4 +1,5 @@
 ﻿namespace tedMovieApp.Services.Interfaces;
+using tedMovieApp.Models;
 
 public interface IMovieService
 {

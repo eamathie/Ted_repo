@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Models;
+using tedMovieApp.Tools;
+
 
 namespace tedMovieApp.Services;
 
@@ -35,8 +38,11 @@ public class MovieService(
             {
                 var omdbDataFullDetails = await omdbApiService.GetMovieById(movie.ImdbId);
                 var movieWithFullDetails = jsonProcessor.ProcessMovieResponse(omdbDataFullDetails);
-                parsedMoviesFull.Add(movieWithFullDetails);
-                await movieRepository.Add(movieWithFullDetails);
+                if (movieWithFullDetails != null)
+                {
+                    parsedMoviesFull.Add(movieWithFullDetails);
+                    await movieRepository.Add(movieWithFullDetails);
+                }
             }
         } 
         

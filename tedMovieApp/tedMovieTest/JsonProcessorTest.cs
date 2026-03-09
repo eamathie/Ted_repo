@@ -1,4 +1,4 @@
-﻿using tedMovieApp.Services;
+﻿using tedMovieApp.Tools;
 
 namespace tedMovieTest
 {
@@ -42,6 +42,8 @@ namespace tedMovieTest
                                 """;
 
             var movie = _processor.ProcessMovieResponse(json);
+
+            Assert.That(movie, Is.Not.Null);
 
             Assert.Multiple(() =>
             {

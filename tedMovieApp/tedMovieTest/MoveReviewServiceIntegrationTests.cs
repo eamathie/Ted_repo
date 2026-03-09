@@ -3,6 +3,7 @@ using tedMovieApp;
 using tedMovieApp.Repositories;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;
+using tedMovieApp.Models;
 
 namespace tedMovieTest
 {
@@ -78,7 +79,7 @@ namespace tedMovieTest
 
             await _service.UpdateMovieReview(
                 id: review.ReviewId,
-                userId: review.UserId,
+                userId: review.UserId!,
                 isAdmin: false,
                 movieId: 99,
                 title: "Updated Title",
@@ -88,6 +89,7 @@ namespace tedMovieTest
 
             var saved = await _db.Reviews.FindAsync(review.ReviewId);
 
+            Assert.That(saved, Is.Not.Null);
             Assert.Multiple(() =>
             {
                 Assert.That(saved.Title, Is.EqualTo("Updated Title"));
@@ -104,7 +106,7 @@ namespace tedMovieTest
             _db.Reviews.Add(review);
             await _db.SaveChangesAsync();
 
-            await _service.DeleteMovieReview(review.ReviewId, review.UserId, isAdmin: false);
+            await _service.DeleteMovieReview(review.ReviewId, review.UserId!, isAdmin: false);
 
             var exists = await _db.Reviews.AnyAsync(r => r.ReviewId == review.ReviewId);
             Assert.That(exists, Is.False);

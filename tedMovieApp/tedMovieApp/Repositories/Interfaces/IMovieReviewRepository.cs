@@ -1,4 +1,5 @@
 ﻿namespace tedMovieApp.Repositories.Interfaces;
+using tedMovieApp.Models;
 
 public interface IMovieReviewRepository
 {

@@ -1,9 +1,11 @@
-﻿namespace tedMovieApp.Dtos;
+﻿using System.Text.Json.Serialization;
+
+namespace tedMovieApp.Models.Dtos;
 
 public class MovieDto
 {
-    public string ImdbId { get; set; }
-    public string Title { get; set; }
-    public string ReleaseYear { get; set; }
-    public string PosterUrl { get; set; }
+    [JsonPropertyName("imdbID")] public required string ImdbId { get; set; }
+    [JsonPropertyName("Title")] public required string Title { get; set; }
+    [JsonPropertyName("Year")] public required string ReleaseYear { get; set; }
+    [JsonPropertyName("Poster")] public required string PosterUrl { get; set; }
 }

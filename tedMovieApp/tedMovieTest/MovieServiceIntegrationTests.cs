@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using tedMovieApp;
-using tedMovieApp.Dtos;
+using tedMovieApp.Models;
+using tedMovieApp.Models.Dtos;
 using tedMovieApp.Repositories;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;
 using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Tools;
 
 namespace tedMovieTest
 {
@@ -76,7 +78,7 @@ namespace tedMovieTest
             _omdb.GetMoviesByQuery("batman").Returns("search-json");
 
             _json.ProcessSearchResults("search-json").Returns([
-                new MovieDto { ImdbId = "tt001", Title = "Batman Begins" }
+                new MovieDto { ImdbId = "tt001", Title = "Batman Begins", ReleaseYear = "1930", PosterUrl = "testUrl" }
             ]);
 
             _omdb.GetMovieById("tt001").Returns("full-json");
@@ -103,7 +105,7 @@ namespace tedMovieTest
             _omdb.GetMoviesByQuery("batman").Returns("search-json");
 
             _json.ProcessSearchResults("search-json").Returns([
-                new MovieDto { ImdbId = "tt001", Title = "Batman Begins" }
+                new MovieDto { ImdbId = "tt001", Title = "Batman Begins", ReleaseYear = "1930", PosterUrl = "testUrl" }
             ]);
 
             await _service.SearchMovies("batman");

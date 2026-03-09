@@ -1,8 +1,8 @@
-﻿namespace tedMovieApp.Dtos;
+﻿namespace tedMovieApp.Models.Dtos;
 
 public class ReviewDto
 {
-    public string Title { get; set; }
-    public string ReviewText { get; set; }
+    public required string Title { get; set; }
+    public required string ReviewText { get; set; }
     public int Stars { get; set; }
 }
