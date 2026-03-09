@@ -78,7 +78,7 @@ namespace tedMovieTest
             _omdb.GetMoviesByQuery("batman").Returns("search-json");
 
             _json.ProcessSearchResults("search-json").Returns([
-                new MovieDto { ImdbId = "tt001", Title = "Batman Begins" }
+                new MovieDto { ImdbId = "tt001", Title = "Batman Begins", ReleaseYear = "1930", PosterUrl = "testUrl" }
             ]);
 
             _omdb.GetMovieById("tt001").Returns("full-json");
@@ -105,7 +105,7 @@ namespace tedMovieTest
             _omdb.GetMoviesByQuery("batman").Returns("search-json");
 
             _json.ProcessSearchResults("search-json").Returns([
-                new MovieDto { ImdbId = "tt001", Title = "Batman Begins" }
+                new MovieDto { ImdbId = "tt001", Title = "Batman Begins", ReleaseYear = "1930", PosterUrl = "testUrl" }
             ]);
 
             await _service.SearchMovies("batman");
