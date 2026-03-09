@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("FrontendPolicy", policy =>
     {
         policy.WithOrigins(
-            "http://localhost:3000",
+            "http://localhost:5173",
             "https://tedmovieapp-frontend.greenmushroom-74de60e7.norwayeast.azurecontainerapps.io"
             )
               .AllowAnyHeader()
