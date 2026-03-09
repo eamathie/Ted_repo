@@ -1,4 +1,4 @@
-namespace tedMovieApp;
+namespace tedMovieApp.Models;
 
 public class User
 {

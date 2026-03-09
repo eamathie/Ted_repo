@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Models;
 using tedMovieApp.Tools;
+
 
 namespace tedMovieApp.Services;
 

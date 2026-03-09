@@ -1,5 +1,6 @@
 ﻿using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services.Interfaces;
+using tedMovieApp.Models;
 
 namespace tedMovieApp.Services;
 

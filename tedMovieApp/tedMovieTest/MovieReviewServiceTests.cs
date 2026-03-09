@@ -1,5 +1,5 @@
 ﻿using NSubstitute;
-using tedMovieApp;
+using tedMovieApp.Models;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;
 

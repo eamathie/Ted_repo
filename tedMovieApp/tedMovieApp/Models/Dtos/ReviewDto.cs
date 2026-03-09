@@ -1,4 +1,4 @@
-﻿namespace tedMovieApp.Dtos;
+﻿namespace tedMovieApp.Models.Dtos;
 
 public class ReviewDto
 {

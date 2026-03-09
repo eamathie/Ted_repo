@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using tedMovieApp.Services;
+using tedMovieApp.Models;
 using tedMovieApp.Services.Interfaces;
 
 namespace tedMovieApp.Controllers;

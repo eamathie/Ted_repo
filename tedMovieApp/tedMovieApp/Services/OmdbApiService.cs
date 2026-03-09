@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using tedMovieApp.Services.Interfaces;
 using tedMovieApp.Tools;
 

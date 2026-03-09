@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using tedMovieApp;
-using tedMovieApp.Dtos;
+using tedMovieApp.Models;
+using tedMovieApp.Models.Dtos;
 using tedMovieApp.Repositories;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;

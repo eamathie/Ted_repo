@@ -3,6 +3,7 @@ using tedMovieApp;
 using tedMovieApp.Repositories;
 using tedMovieApp.Repositories.Interfaces;
 using tedMovieApp.Services;
+using tedMovieApp.Models;
 
 namespace tedMovieTest
 {
