@@ -20,7 +20,7 @@ namespace tedMovieTest
         [Test]
         public async Task GetAllMovieReviews_ReturnsRepositoryResults()
         {
-            var reviews = new List<Review> { new(), new() };
+            var reviews = new List<Review> { new() {UserId = "TestId", Title = "test1", ReviewText = "test1"}, new() {UserId = "TestId", Title = "test2", ReviewText = "test2"} };
             _repo.GetAll().Returns(reviews);
 
             var result = await _service.GetAllMovieReviews();
@@ -31,7 +31,7 @@ namespace tedMovieTest
         [Test]
         public void GetMovieReview_Throws_WhenNotFound()
         {
-            _repo.GetReview(1).Returns((Review)null);
+            _repo.GetReview(1).Returns(null as Review);
 
             Assert.That(
                 async () => await _service.GetMovieReview(1),
@@ -42,7 +42,7 @@ namespace tedMovieTest
         [Test]
         public async Task GetMovieReview_ReturnsReview_WhenFound()
         {
-            var review = new Review { ReviewId = 1 };
+            var review = new Review { UserId = "testId", ReviewId = 1, Title = "test", ReviewText = "test" };
             _repo.GetReview(1).Returns(review);
 
             var result = await _service.GetMovieReview(1);
@@ -53,7 +53,7 @@ namespace tedMovieTest
         [Test]
         public async Task GetMovieReviewsUser_ReturnsUserReviews()
         {
-            var reviews = new List<Review> { new() };
+            var reviews = new List<Review> { new() { UserId = "TestId", Title = "test", ReviewText = "test" }};
             _repo.GetAllUser("abc").Returns(reviews);
 
             var result = await _service.GetMovieReviewsUser("abc");
@@ -77,6 +77,7 @@ namespace tedMovieTest
                 stars: 5
             );
 
+            Assert.That(captured, Is.Not.Null);
             Assert.Multiple(() =>
             {
                 Assert.That(captured.Title, Is.EqualTo("Great!"));
@@ -91,7 +92,7 @@ namespace tedMovieTest
         [Test]
         public void DeleteMovieReview_Throws_WhenNotFound()
         {
-            _repo.GetReview(1).Returns((Review)null);
+            _repo.GetReview(1).Returns(null as Review);
 
             Assert.That(
                 async () => await _service.DeleteMovieReview(1, "u1", false),
@@ -102,7 +103,7 @@ namespace tedMovieTest
         [Test]
         public void DeleteMovieReview_Throws_WhenUnauthorized()
         {
-            var review = new Review { ReviewId = 1, UserId = "owner" };
+            var review = new Review { ReviewId = 1, UserId = "owner", Title = "test", ReviewText = "test" };
             _repo.GetReview(1).Returns(review);
 
             Assert.That(
@@ -114,7 +115,7 @@ namespace tedMovieTest
         [Test]
         public async Task DeleteMovieReview_Deletes_WhenAuthorized()
         {
-            var review = new Review { ReviewId = 1, UserId = "u1" };
+            var review = new Review { ReviewId = 1, UserId = "u1" , Title = "test", ReviewText = "test"};
             _repo.GetReview(1).Returns(review);
 
             var result = await _service.DeleteMovieReview(1, "u1", false);
@@ -126,7 +127,7 @@ namespace tedMovieTest
         [Test]
         public void UpdateMovieReview_Throws_WhenNotFound()
         {
-            _repo.GetReview(1).Returns((Review)null);
+            _repo.GetReview(1).Returns(null as Review);
 
             Assert.That(
                 async () => await _service.UpdateMovieReview(1, "u1", false, 10, "t", "txt", 4),
@@ -137,7 +138,7 @@ namespace tedMovieTest
         [Test]
         public void UpdateMovieReview_Throws_WhenUnauthorized()
         {
-            var review = new Review { ReviewId = 1, UserId = "owner" };
+            var review = new Review { ReviewId = 1, UserId = "owner", Title = "test", ReviewText = "test" };
             _repo.GetReview(1).Returns(review);
 
             Assert.That(
@@ -149,7 +150,7 @@ namespace tedMovieTest
         [Test]
         public async Task UpdateMovieReview_Updates_WhenAuthorized()
         {
-            var review = new Review { ReviewId = 1, UserId = "u1" };
+            var review = new Review { ReviewId = 1, UserId = "u1", Title = "test", ReviewText = "test" };
             _repo.GetReview(1).Returns(review);
 
             var result = await _service.UpdateMovieReview(

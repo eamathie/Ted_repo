@@ -89,6 +89,7 @@ namespace tedMovieTest
 
             var saved = await _db.Reviews.FindAsync(review.ReviewId);
 
+            Assert.That(saved, Is.Not.Null);
             Assert.Multiple(() =>
             {
                 Assert.That(saved.Title, Is.EqualTo("Updated Title"));

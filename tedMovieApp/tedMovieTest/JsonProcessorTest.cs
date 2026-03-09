@@ -43,6 +43,8 @@ namespace tedMovieTest
 
             var movie = _processor.ProcessMovieResponse(json);
 
+            Assert.That(movie, Is.Not.Null);
+
             Assert.Multiple(() =>
             {
                 Assert.That(movie.ImdbId, Is.EqualTo("tt1234567"));
