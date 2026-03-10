@@ -1,4 +1,5 @@
 
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -15,7 +16,7 @@ public sealed class OmdbDateOnlyConverter : JsonConverter<DateOnly>
         if (str == "N/A")
             return DateOnly.MinValue;
             
-        if (DateOnly.TryParseExact(str, Format, out var date))
+        if (DateOnly.TryParseExact(str, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
             return date;
         
         throw new JsonException($"Invalid OMDB date format: {str}");
