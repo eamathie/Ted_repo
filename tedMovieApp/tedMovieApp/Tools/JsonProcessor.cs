@@ -6,11 +6,9 @@ namespace tedMovieApp.Tools;
 
 public class JsonProcessor : IJsonProcessor
 {
-    private readonly JsonSerializerOptions options = new() {};
+    private readonly JsonSerializerOptions options = new() { Converters = {new OmdbDateOnlyConverter()} };
     public Movie? ProcessMovieResponse(string data)
-    {
-        options.Converters.Add(new OmdbDateOnlyConverter());
-        
+    {        
         var json = JsonDocument.Parse(data); 
         var root = json.RootElement; 
         
